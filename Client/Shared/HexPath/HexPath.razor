@@ -1,0 +1,17 @@
+﻿@using Dotdev.Core.HexPath
+
+<div class="hexPath">
+	@foreach (var hex in @hexSet)
+	{
+        <Hex Hx="hex" />
+	}
+</div>
+
+@code {
+	private List<HexItem?> hexSet = new List<HexItem?>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		hexSet.Add(new HexItem(5,5,"#A1AEFF"));
+	}
+}
