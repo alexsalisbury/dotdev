@@ -1,0 +1,15 @@
+﻿@using Dotdev.Core.HexPath
+
+<div class="@HexClass">
+    <svg class="hex-svg" fill="@Hx?.Shade" viewBox="0 0 200 174">
+       <path class="hex-border" d="M0 86.60254037844386L50 0L150 0L200 86.60254037844386L150 173.20508075688772L50 173.20508075688772Z">
+     </path>
+   </svg>
+</div>
+
+@code {
+    [Parameter]
+    public HexItem? Hx { get; set; }
+
+    public string HexClass => $"hex c{Hx?.Column ?? 0} r{Hx?.Row ?? 0}";
+}

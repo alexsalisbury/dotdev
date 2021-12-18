@@ -34,6 +34,21 @@ a, .btn-link {
     color: red;
 }
 
+.hexPath {
+    margin-top: 50px;
+}
+
+.hex {
+    position: absolute;
+    height: 49.6px;
+    width: 56px;
+    transition: all 0.3s;
+    top: 50%;
+    left: 50%;
+    margin-left: -32px;
+    margin-top: -32px;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
