@@ -1,15 +1,57 @@
 ﻿@using Dotdev.Core.HexPath
 
-<div class="@HexClass">
-    <svg class="hex-svg" fill="@Hx?.Shade" viewBox="0 0 200 174">
-       <path class="hex-border" d="M0 86.60254037844386L50 0L150 0L200 86.60254037844386L150 173.20508075688772L50 173.20508075688772Z">
-     </path>
+<div class="@HexClass" @onclick="OnClick">
+    <svg class="hex-svg" viewBox=@viewBox>
+
+      <defs>
+          <pattern id="imgpattern" x="0" y="0" width="1" height="1"
+                   viewBox=@viewBox preserveAspectRatio="xMidYMid slice">
+            <image width="100%" height="100%" href=@Target/>
+          </pattern>
+      </defs>
+      
+      <polygon fill=@HexFill style="stroke:black;stroke-width:2px" points=@points/>
+       
    </svg>
 </div>
 
 @code {
+    private const double piOver3 = Math.PI / 3;
+    private const double piOver6 = Math.PI / 6;
+    private const uint size = 200;
+
     [Parameter]
     public HexItem? Hx { get; set; }
+    public HexItem? Active { get; set; }
 
-    public string HexClass => $"hex c{Hx?.Column ?? 0} r{Hx?.Row ?? 0}";
+    public string HexClass => Hx is null ? "hex": "hex";
+
+    public string SizeStr => size.ToString();
+    public string Target => Active?.Target ?? Hx?.Target ?? "#";
+
+    public string viewBox => $"0 0 {size} {size}";
+
+    public string points => $"{GetPair(0)} {GetPair(1)} {GetPair(2)} {GetPair(3)} {GetPair(4)} {GetPair(5)} {GetPair(6)}";
+
+    public bool StaticColor = false;
+    public bool Enabled => Hx?.Enabled ?? false;
+
+    public bool Populated => Hx is not null;
+
+    public string HexFill => Active is null ? "transparent" : StaticColor ? $"{Hx?.Shade}" : "url(#imgpattern)";
+
+    private string GetPair(int idx) => $"{size/2*(1+Math.Cos((idx*piOver3)-piOver6))},{size/2*(1+Math.Sin((idx*piOver3)-piOver6))}";
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    private void OnClick()
+    {
+        if (Enabled)
+        {
+            Active = Hx ?? Active;
+            Hx = null;
+        }
+    }
 }
