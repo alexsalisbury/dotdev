@@ -1,18 +1,17 @@
 ﻿@using Dotdev.Core.HexPath
+@inject IHoneycomb Grid
 
 <div class="hexPath">
-	@foreach (var hex in @hexSet.Values)
+	@foreach (var hex in @Grid.GetItems())
 	{
-        <Hex Hx="hex" />
+        <Hex Hx="hex.Location" Style="hex.Style" />
 	}
 </div>
 
 @code {
-	private Dictionary<(int, int), HexItem?> hexSet = new();
-
-	protected override async Task OnInitializedAsync()
-	{
-		uint[] Empty = Array.Empty<uint>();
-		hexSet.Add((5,5), new HexItem(1, 5,5,"#A1AEFF", "hexOne", "./hex_placeholder.png", true, Empty));
-	}
+    protected override async Task OnInitializedAsync()
+    {
+        Grid.HoneycombChanged += ((s,e) => { base.StateHasChanged(); });
+        Grid.AddRoot(new HexLocation(HexOrder.Intro, IntroHex.DefaultLocation));
+    }
 }

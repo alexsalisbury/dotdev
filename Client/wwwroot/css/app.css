@@ -1,6 +1,4 @@
-﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
-
-html, body {
+﻿html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
@@ -34,19 +32,26 @@ a, .btn-link {
     color: red;
 }
 
+
 .hexPath {
-    margin-top: 50px;
+    width: min(80%, 200rem);
 }
 
-.hex {
-    position: absolute;
-    height: 49.6px;
-    width: 56px;
-    transition: all 0.3s;
-    top: 50%;
-    left: 50%;
-    margin-left: -32px;
-    margin-top: -32px;
+.hexroot {
+    position: fixed;
+    top: 100px;
+    left: 120px;
+    width: 100px;
+}
+
+.hexabout {
+    position: fixed;
+    top: 177px;
+    left: 167px;
+    width: 100px;
+}
+
+.hexghost {
 }
 
 #blazor-error-ui {
