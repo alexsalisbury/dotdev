@@ -10,10 +10,14 @@
 
   <ItemGroup>
     <None Remove="Shared\HexPath\HexPath.razor.css" />
+    <None Remove="Shared\Status\PeriodicTable.razor.css" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Shared\HexPath\HexPath.razor.css" />
+    <Content Include="Shared\HexPath\HexPath.razor.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Shared\Status\PeriodicTable.razor.css" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +32,9 @@
 
   <ItemGroup>
     <Content Update="Shared\HexPath\HexPath.razor">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Shared\Status\PeriodicTable.razor">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
