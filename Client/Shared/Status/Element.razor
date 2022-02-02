@@ -1,0 +1,28 @@
+﻿@using Dotdev.Core.Element
+
+<div class="@ElementClass">
+    <div class="atomic-number">@Number</div>
+    <div class="label">
+        <div class="symbol">@Symbol</div>
+        <div class="name">@Name</div>
+    </div>
+    <div class="status">@StatusKey</div>
+</div>
+
+@code {
+    [Parameter]
+    public ElementInfo Info { get; set; }
+    [Parameter]
+    public string StatusKey { get; set; }
+
+    public uint Number => Info.Number;
+    public string Symbol => Info.Symbol;
+    public string Name => Info.Name;
+    //public string Mass => Info.Mass;
+    //public string WeightStr => Info.WeightStr;
+    //public IEnumerable<uint> Weights => Info.Weight ?? new List<uint>();
+    public string Material => Info.Material;
+    public uint Column => Info.Column;
+    public uint Row => Info.Row;
+    public string ElementClass => $"element {Material} {StatusKey}";
+}

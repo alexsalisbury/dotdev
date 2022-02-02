@@ -1,0 +1,15 @@
+﻿@using Dotdev.Core.Element
+
+<div class="@SquareClass">
+    <Element Info="SQ.Info" StatusKey="@ServerStatus"></Element>
+</div>
+
+@code {
+
+    [Parameter]
+    public Square SQ { get; set; }
+
+    public string SquareClass => $"square c{SQ.Column} r{SQ.Row}";
+    public string OverlayClass => $"overlay {ServerStatus}";
+    public string ServerStatus => SQ?.ServerStatusClass ?? "unknown";
+}
