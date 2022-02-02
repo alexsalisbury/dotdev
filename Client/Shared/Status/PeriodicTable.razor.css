@@ -1,0 +1,261 @@
+﻿:root {
+    --color-red: #EF3D59;
+    --color-orange: #E17A47;
+    --color-yellow: #EFC958;
+    --color-green: #4AB19D;
+    --color-darkblue: #344e5c;
+    --color-purple: #A6206A;
+    --color-pink: #F69A9A;
+    --color-gold: #f9cdaE;
+    --color-grey: #647277;
+    --color-lightblue: #BAD3D1;
+}
+
+body {
+}
+
+.periodic-table {
+    display: grid;
+    gap: 5px;
+    grid-template-columns: repeat(18, 1fr);
+}
+
+::deep .square {
+    position: relative;
+    font-size: 0.5vw;
+    padding-bottom: 100%;
+    cursor: pointer;
+    color: #fff;
+    transition: 500ms;
+}
+
+::deep .element {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid;
+    box-sizing: border-box;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition-property: transform, z-index, left, right, top, bottom;
+    transition-duration: 100ms, 0ms, 200ms, 200ms, 200ms, 200ms;
+    transition-delay: 0ms, 100ms, 0ms, 0ms, 0ms, 0ms;
+}
+
+    ::deep .element:hover {
+        z-index: 2;
+        transform: scale(1.2);
+        transition-delay: 1ms;
+        outline: none;
+        border-width: 2px;
+    }
+
+
+::deep .element .atomic-number {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 2px;
+    visibility: hidden;
+}
+
+    ::deep .element:hover .atomic-number {
+        visibility: visible;
+    }
+
+::deep .element .label {
+    text-align: center;
+    transition: 200ms;
+}
+
+::deep .element .symbol {
+    font-size: 2.0vw;
+}
+
+::deep .element .name {
+    font-size: 0.6vw;
+}
+
+::deep .element .status {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 2px;
+    text-align: center;
+    visibility: hidden;
+}
+
+    ::deep .element:hover .status {
+        visibility: visible;
+    }
+
+
+
+::deep .alkali-metal {
+    border-color: #F69A9A;
+}
+
+::deep .alkaline-earth-metal {
+    border-color: #EF3D59;
+}
+
+::deep .lanthanoid {
+    border-color: #647277;
+}
+
+::deep .actinoid {
+    border-color: #647277;
+}
+
+::deep .transition-metal {
+    border-color: #EFC958;
+}
+
+::deep .post-transition-metal {
+    border-color: #4AB19D;
+}
+
+::deep .metalloid {
+    border-color: #A6206A;
+}
+
+::deep .other-nonmetal {
+    border-color: #344e9c;
+}
+
+::deep .noble-gas {
+    border-color: #A6206A;
+}
+
+
+
+::deep .c1 {
+    grid-column: 1
+}
+::deep .c2 {
+    grid-column: 2
+}
+::deep .c3 {
+    grid-column: 3
+}
+::deep .c4 {
+    grid-column: 4
+}
+::deep .c5 {
+    grid-column: 5
+}
+::deep .c6 {
+    grid-column: 6
+}
+::deep .c7 {
+    grid-column: 7
+}
+::deep .c8 {
+    grid-column: 8
+}
+::deep .c9 {
+    grid-column: 9
+}
+::deep .c10 {
+    grid-column: 10
+}
+::deep .c11 {
+    grid-column: 11
+}
+::deep .c12 {
+    grid-column: 12
+}
+::deep .c13 {
+    grid-column: 13
+}
+::deep .c14 {
+    grid-column: 14
+}
+::deep .c15 {
+    grid-column: 15
+}
+::deep .c16 {
+    grid-column: 16
+}
+::deep .c17 {
+    grid-column: 17
+}
+::deep .c18 {
+    grid-column: 18
+}
+::deep .r1 {
+    grid-row: 1
+}
+::deep .r2 {
+    grid-row: 2
+}
+::deep .r3 {
+    grid-row: 3
+}
+::deep .r4 {
+    grid-row: 4
+}
+::deep .r5 {
+    grid-row: 5
+}
+::deep .r6 {
+    grid-row: 6
+}
+::deep .r7 {
+    grid-row: 7
+}
+::deep .r8 {
+    grid-row: 8
+}
+::deep .r9 {
+    grid-row: 9
+}
+::deep .r10 {
+    grid-row: 10
+}
+::deep .r11 {
+    grid-row: 11
+}
+::deep .r12 {
+    grid-row: 12
+}
+
+::deep .online .symbol {
+    color: #4AB15D;
+    text-shadow: 0 0 0.3vw #4AB15D;
+}
+
+::deep .online:hover {
+    background-color: rgba(58, 221, 11, 0.1);
+    color: #4AB15D;
+}
+
+::deep .offline .symbol {
+    color: #ff0000;
+    text-shadow: 0 0 0.3vw #ff0000;
+}
+
+::deep .offline:hover {
+    background-color: rgba(256, 0, 0, 0.1);
+    color: #ff0000;
+}
+
+::deep .untracked .symbol {
+    color: #BAD3D1;
+    text-shadow: 0 0 0.3vw #BAD3D1;
+}
+
+::deep .untracked:hover {
+    background-color: rgba(186, 211, 209, 0.2);
+    color: #BAD3D1;
+}
+
+::deep .unknown .symbol {
+    color: #777777;
+}

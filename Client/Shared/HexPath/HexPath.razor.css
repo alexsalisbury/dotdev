@@ -1,3 +1,23 @@
 ﻿body {
 }
 
+::deep .hexPath {
+    width: min(80%, 200rem);
+}
+
+::deep .hexroot {
+    position: fixed;
+    top: 100px;
+    left: 100px;
+    width: 100px;
+}
+
+::deep .hexabout {
+    position: fixed;
+    top: 180px;
+    left: 150px;
+    width: 100px;
+}
+
+::deep .hexghost {
+}
