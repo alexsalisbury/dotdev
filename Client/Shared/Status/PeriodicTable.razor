@@ -11,7 +11,7 @@
 </div>
 
 @code {
-    private const string url = "";
+    private const string url = "https://alexsalisbury.dev/api/";
     private HubConnection? hubConnection;
     private IEnumerable<ElementInfo> elements = null;
     private Dictionary<uint, Square> squares = new Dictionary<uint, Square>();
@@ -29,7 +29,7 @@
             }
         }
 
-        hubConnection = new HubConnectionBuilder().WithUrl("/api").Build();
+        hubConnection = new HubConnectionBuilder().WithUrl(url).Build();
 
         hubConnection.On<uint, DateTimeOffset>("status", (id, timestamp) =>
         {
