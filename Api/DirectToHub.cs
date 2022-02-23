@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Net.Http;
 
+// peeking a bit off of https://github.com/madebygps/signalr-functions-blazor-demo/blob/master/function/Function.cs,
+// but ultimately going a different (sub)path.
 namespace Dotdev.Api
 {
     public record StatusDatapoint (uint Id, DateTimeOffset Timestamp);
@@ -76,17 +78,17 @@ namespace Dotdev.Api
             await notifications.AddAsync(result);
         }
 
-        [FunctionName("broadcast")]
-        public static async Task QueueToBroadcast(
-           [QueueTrigger("status")] StatusDatapoint data,
-            [SignalR(HubName = "serverless")] IAsyncCollector<SignalRMessage> signalRMessages)
-        {
-            await signalRMessages.AddAsync(
-                new SignalRMessage
-                {
-                    Target = "status",
-                    Arguments = new object[] { data.Id, data.Timestamp }
-                });
-        }
+        //[FunctionName("broadcast")]
+        //public static async Task QueueToBroadcast(
+        //   [QueueTrigger("status")] StatusDatapoint data,
+        //    [SignalR(HubName = "serverless")] IAsyncCollector<SignalRMessage> signalRMessages)
+        //{
+        //    await signalRMessages.AddAsync(
+        //        new SignalRMessage
+        //        {
+        //            Target = "status",
+        //            Arguments = new object[] { data.Id, data.Timestamp }
+        //        });
+        //}
     }
 }
