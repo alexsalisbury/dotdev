@@ -71,7 +71,7 @@ namespace Dotdev.Api
 
         [FunctionName("intake")]
         public static async Task Intake(
-            [HttpTrigger(AuthorizationLevel.User, "get", "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             [Queue("status")] IAsyncCollector<StatusDatapoint> notifications)
         {
             var result = JsonConvert.DeserializeObject<StatusDatapoint>(req.Body.ToString());
