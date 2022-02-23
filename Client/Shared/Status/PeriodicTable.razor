@@ -1,5 +1,7 @@
 ﻿@using Dotdev.Core.Element
+@using Microsoft.AspNetCore.SignalR.Client
 @inject HttpClient Http
+@implements IAsyncDisposable
 
 <div class="periodic-table">
     @foreach (var sq in squares.Values)
@@ -8,7 +10,9 @@
     }
 </div>
 
-@code {      
+@code {
+    private const string url = "";
+    private HubConnection? hubConnection;
     private IEnumerable<ElementInfo> elements = null;
     private Dictionary<uint, Square> squares = new Dictionary<uint, Square>();
 
@@ -24,7 +28,31 @@
                 squares[e.Number] = new Square() { Info = e,  Status = server };
             }
         }
-    }
+
+        hubConnection = new HubConnectionBuilder().WithUrl("/api").Build();
+
+        hubConnection.On<uint, DateTimeOffset>("status", (id, timestamp) =>
+        {
+            squares[id].SetLastSeen(timestamp);
+            StateHasChanged();
+        });
+
+        await hubConnection.StartAsync();
+}
+        
+    //protected override async Task OldInitializedAsync()
+    //{
+    //    var servers = await GetServers();
+
+    //    foreach (var e in await GetElements())
+    //    {
+    //        if (!squares.ContainsKey(e.Number) || squares[e.Number] == null)
+    //        {
+    //            var server = servers.FirstOrDefault(s => s.Number == e.Number);
+    //            squares[e.Number] = new Square() { Info = e,  Status = server };
+    //        }
+    //    }
+    //}
 
     protected async Task<IEnumerable<ElementInfo>> GetElements()
     {
@@ -43,7 +71,22 @@
 
         return elements;
     }
+
     protected async Task<IEnumerable<ServerInfo>> GetServers()
+    {
+        return await GetExampleServers();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+
+
+    protected async Task<IEnumerable<ServerInfo>> GetExampleServers()
     {
         var h = new ServerInfo()
         {
@@ -90,7 +133,7 @@
             Number = 28,
             Name = "Nickel",
             Status = "untracked",
-            DeviceType = 2,
+            DeviceType = 6,
             IP = ".28",
             Symbol = "Ni",
             LastSeen = DateTimeOffset.UtcNow.AddSeconds(-34)
@@ -100,17 +143,27 @@
             Number = 29,
             Name = "Copper",
             Status = "offline",
-            DeviceType = 2,
+            DeviceType = 7,
             IP = ".29",
             Symbol = "Cu",
             LastSeen = DateTimeOffset.UtcNow.AddSeconds(-34)
+        };
+        var pd = new ServerInfo()
+        {
+            Number = 46,
+            Name = "Palladium",
+            Status = "untracked",
+            DeviceType = 7,
+            IP = ".54",
+            Symbol = "Pd",
+            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-5)
         };
         var ag = new ServerInfo()
         {
             Number = 47,
             Name = "Silver",
             Status = "untracked",
-            DeviceType = 2,
+            DeviceType = 7,
             IP = ".47",
             Symbol = "Ag",
             LastSeen = DateTimeOffset.UtcNow.AddSeconds(-34)
@@ -122,7 +175,7 @@
             Status = "untracked",
             DeviceType = 4,
             IP = ".53",
-            Symbol = "Xe",
+            Symbol = "I",
             LastSeen = DateTimeOffset.UtcNow.AddSeconds(-5)
         };
         var xe = new ServerInfo()
@@ -135,6 +188,16 @@
             Symbol = "Xe",
             LastSeen = DateTimeOffset.UtcNow.AddSeconds(-5)
         };
+        var ho = new ServerInfo()
+        {
+            Number = 65,
+            Name = "Holmium",
+            Status = "untracked",
+            DeviceType = 8,
+            IP = ".54",
+            Symbol = "Ho",
+            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-5)
+        };
 
         var result = new List<ServerInfo>();
         await Task.Delay(500);
@@ -144,9 +207,11 @@
         result.Add(k);
         result.Add(ni);
         result.Add(cu);
+        result.Add(pd);
         result.Add(ag);
         result.Add(io);
         result.Add(xe);
+       // result.Add(ho);
         return result;
     }
 
