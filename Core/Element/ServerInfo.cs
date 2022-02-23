@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class ServerInfo
+    public record ServerInfo
     {
         public uint Number { get; set; }
         public string Symbol { get; set; }
