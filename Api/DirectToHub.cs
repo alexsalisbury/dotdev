@@ -18,8 +18,8 @@ namespace Dotdev.Api
 
     public static class DirectToHub
     {
-        private static HttpClient httpClient = new HttpClient();
-        private static string Etag = string.Empty;
+    //    private static HttpClient httpClient = new HttpClient();
+    //    private static string Etag = string.Empty;
 
         //[FunctionName("DirectToHub")]
         //public static async Task<IActionResult> Run(
@@ -69,14 +69,14 @@ namespace Dotdev.Api
         //    await notifications.AddAsync(result);
         //}
 
-        [FunctionName("intake")]
-        public static async Task Intake(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
-            [Queue("status")] IAsyncCollector<StatusDatapoint> notifications)
-        {
-            var result = JsonConvert.DeserializeObject<StatusDatapoint>(req.Body.ToString());
-            await notifications.AddAsync(result);
-        }
+        //[FunctionName("intake")]
+        //public static async Task Intake(
+        //    [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
+        //    [Queue("status")] IAsyncCollector<StatusDatapoint> notifications)
+        //{
+        //    var result = JsonConvert.DeserializeObject<StatusDatapoint>(req.Body.ToString());
+        //    await notifications.AddAsync(result);
+        //}
 
         //[FunctionName("broadcast")]
         //public static async Task QueueToBroadcast(
