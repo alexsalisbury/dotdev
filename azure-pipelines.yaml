@@ -1,0 +1,22 @@
+# Quick Pipeline based on: https://docs.microsoft.com/en-us/azure/static-web-apps/publish-devops
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include: [ element ] # branch names which will trigger a build
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - checkout: self
+    submodules: true
+  - task: AzureStaticWebApp@0
+    inputs:
+      app_location: 'Client'
+      app_build_command: 'dotnet build'
+      output_location: 'wwwroot'
+      api_location: 'Api'
+      api_build_command: 'dotnet build'
+      #routes_location: '/Client/wwwroot'
+      azure_static_web_apps_api_token: $(deployment_token)
