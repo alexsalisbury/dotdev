@@ -59,13 +59,13 @@ namespace Dotdev.Api
             return connectionInfo;
         }
 
-        [FunctionName("canary")]
-        public static async Task Canary([TimerTrigger("0 */5 * * * *")] TimerInfo myTimer,
-            [Queue("status")] IAsyncCollector<StatusDatapoint> notifications)
-        {
-            var result = new StatusDatapoint(1, DateTimeOffset.UtcNow);
-            await notifications.AddAsync(result);
-        }
+        //[FunctionName("canary")]
+        //public static async Task Canary([TimerTrigger("0 */5 * * * *")] TimerInfo myTimer,
+        //    [Queue("status")] IAsyncCollector<StatusDatapoint> notifications)
+        //{
+        //    var result = new StatusDatapoint(1, DateTimeOffset.UtcNow);
+        //    await notifications.AddAsync(result);
+        //}
 
         [FunctionName("intake")]
         public static async Task Intake(
