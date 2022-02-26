@@ -7,7 +7,7 @@ using Microsoft.Azure.WebJobs.Extensions.SignalRService;
 
 public static class HubNegotiateFunction
 {
-    [FunctionName("HubNegotiate")]
+    [FunctionName("negotiate")]
     public static SignalRConnectionInfo Run(
         [HttpTrigger(AuthorizationLevel.Anonymous)] HttpRequest req,
         [SignalRConnectionInfo(HubName = "homedotcloud")] SignalRConnectionInfo connectionInfo)
