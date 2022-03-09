@@ -77,14 +77,6 @@
         return await GetExampleServers();
     }
 
-    public async ValueTask DisposeAsync()
-    {
-        if (hubConnection is not null)
-        {
-            await hubConnection.DisposeAsync();
-        }
-    }
-
 
     protected async Task<IEnumerable<ServerInfo>> GetExampleServers()
     {
@@ -274,21 +266,21 @@
         result.Add(new ElementInfo(54, "Xe", "Xenon", 131.29, "[2, 8, 18, 18, 8]", "noble-gas", 18, 5));
         result.Add(new ElementInfo(55, "Cs", "Caesium", 132.91, "[2, 8, 18, 18, 8, 1]", "alkali-metal", 1, 6));
         result.Add(new ElementInfo(56, "Ba", "Barium", 137.33, "[2, 8, 18, 18, 8, 2]", "alkaline-earth-metal", 2, 6));
-        //result.Add(new ElementInfo(57, "La", "Lanthanum", 138.91, "[2, 8, 18, 18, 9, 2]", "lanthanoid", 4, 9));
-        //result.Add(new ElementInfo(58, "Ce", "Cerium", 140.12, "[2, 8, 18, 19, 9, 2]", "lanthanoid", 5, 9));
-        //result.Add(new ElementInfo(59, "Pr", "Praseodymium", 140.91, "[2, 8, 18, 21, 8, 2]", "lanthanoid", 6, 9));
-        //result.Add(new ElementInfo(60, "Nd", "Neodymium", 144.24, "[2, 8, 18, 22, 8, 2]", "lanthanoid", 7, 9));
-        //result.Add(new ElementInfo(61, "Pm", "Promethium", 144.24, "[2, 8, 18, 23, 8, 2]", "lanthanoid", 8, 9));
-        //result.Add(new ElementInfo(62, "Sm", "Samarium", 150.36, "[2, 8, 18, 24, 8, 2]", "lanthanoid", 9, 9));
-        //result.Add(new ElementInfo(63, "Eu", "Europium", 151.96, "[2, 8, 18, 25, 8, 2]", "lanthanoid", 10, 9));
-        //result.Add(new ElementInfo(64, "Gd", "Gadolinium", 157.25, "[2, 8, 18, 25, 9, 2]", "lanthanoid", 11, 9));
-        //result.Add(new ElementInfo(65, "Tb", "Terbium", 158.93, "[2, 8, 18, 27, 8, 2]", "lanthanoid", 12, 9));
-        //result.Add(new ElementInfo(66, "Dy", "Dysprosium", 162.50, "[2, 8, 18, 28, 8, 2]", "lanthanoid", 13, 9));
-        //result.Add(new ElementInfo(67, "Ho", "Holmium", 164.93, "[2, 8, 18, 29, 8, 2]", "lanthanoid", 14, 9));
-        //result.Add(new ElementInfo(68, "Er", "Erbium", 167.26, "[2, 8, 18, 30, 8, 2]", "lanthanoid", 15, 9));
-        //result.Add(new ElementInfo(69, "Tm", "Thulium", 168.93, "[2, 8, 18, 31, 8, 2]", "lanthanoid", 16, 9));
-        //result.Add(new ElementInfo(70, "Yb", "Ytterbium", 173.05, "[2, 8, 18, 32, 8, 2]", "lanthanoid", 17, 9));
-        //result.Add(new ElementInfo(71, "Lu", "Lutetium", 174.97, "[2, 8, 18, 32, 9, 2]", "lanthanoid", 18, 9));
+        result.Add(new ElementInfo(57, "La", "Lanthanum", 138.91, "[2, 8, 18, 18, 9, 2]", "lanthanoid", 4, 9));
+        result.Add(new ElementInfo(58, "Ce", "Cerium", 140.12, "[2, 8, 18, 19, 9, 2]", "lanthanoid", 5, 9));
+        result.Add(new ElementInfo(59, "Pr", "Praseodymium", 140.91, "[2, 8, 18, 21, 8, 2]", "lanthanoid", 6, 9));
+        result.Add(new ElementInfo(60, "Nd", "Neodymium", 144.24, "[2, 8, 18, 22, 8, 2]", "lanthanoid", 7, 9));
+        result.Add(new ElementInfo(61, "Pm", "Promethium", 144.24, "[2, 8, 18, 23, 8, 2]", "lanthanoid", 8, 9));
+        result.Add(new ElementInfo(62, "Sm", "Samarium", 150.36, "[2, 8, 18, 24, 8, 2]", "lanthanoid", 9, 9));
+        result.Add(new ElementInfo(63, "Eu", "Europium", 151.96, "[2, 8, 18, 25, 8, 2]", "lanthanoid", 10, 9));
+        result.Add(new ElementInfo(64, "Gd", "Gadolinium", 157.25, "[2, 8, 18, 25, 9, 2]", "lanthanoid", 11, 9));
+        result.Add(new ElementInfo(65, "Tb", "Terbium", 158.93, "[2, 8, 18, 27, 8, 2]", "lanthanoid", 12, 9));
+        result.Add(new ElementInfo(66, "Dy", "Dysprosium", 162.50, "[2, 8, 18, 28, 8, 2]", "lanthanoid", 13, 9));
+        result.Add(new ElementInfo(67, "Ho", "Holmium", 164.93, "[2, 8, 18, 29, 8, 2]", "lanthanoid", 14, 9));
+        result.Add(new ElementInfo(68, "Er", "Erbium", 167.26, "[2, 8, 18, 30, 8, 2]", "lanthanoid", 15, 9));
+        result.Add(new ElementInfo(69, "Tm", "Thulium", 168.93, "[2, 8, 18, 31, 8, 2]", "lanthanoid", 16, 9));
+        result.Add(new ElementInfo(70, "Yb", "Ytterbium", 173.05, "[2, 8, 18, 32, 8, 2]", "lanthanoid", 17, 9));
+        result.Add(new ElementInfo(71, "Lu", "Lutetium", 174.97, "[2, 8, 18, 32, 9, 2]", "lanthanoid", 18, 9));
         result.Add(new ElementInfo(72, "Hf", "Hafnium", 178.49, "[2, 8, 18, 32, 10, 2]", "transition-metal", 4, 6));
         result.Add(new ElementInfo(73, "Ta", "Tantalum", 180.95, "[2, 8, 18, 32, 11, 2]", "transition-metal", 5, 6));
         result.Add(new ElementInfo(74, "W", "Tungsten", 183.84, "[2, 8, 18, 32, 12, 2]", "transition-metal", 6, 6));
@@ -306,22 +298,21 @@
         result.Add(new ElementInfo(86, "Rn", "Radon", "(222)", "[2, 8, 18, 32, 18, 8]", "noble-gas", 18, 6));
         result.Add(new ElementInfo(87, "Fr", "Francium", "(223)", "[2, 8, 18, 32, 18, 8, 1]", "alkali-metal", 1, 7));
         result.Add(new ElementInfo(88, "Ra", "Radium", "(226)", "[2, 8, 18, 32, 18, 8, 2]", "alkaline-earth-metal", 2, 7));
-
-        //result.Add(new ElementInfo(89, "Ac", "Actinium", "(227)", "[2, 8, 18, 32, 18, 9, 2]", "actinoid", 4, 10));
-        //result.Add(new ElementInfo(90, "Th", "Thorium", 232.04, "[2, 8, 18, 32, 18, 10, 2]", "actinoid", 5, 10));
-        //result.Add(new ElementInfo(91, "Pa", "Protactinium", 231.04, "[2, 8, 18, 32, 20, 9, 2]", "actinoid", 6, 10));
-        //result.Add(new ElementInfo(92, "U", "Uranium", 238.03, "[2, 8, 18, 32, 21, 9, 2]", "actinoid", 7, 10));
-        //result.Add(new ElementInfo(93, "Np", "Neptunium", "(237)", "[2, 8, 18, 32, 22, 9, 2]", "actinoid", 8, 10));
-        //result.Add(new ElementInfo(94, "Pu", "Plutonium", "(244)", "[2, 8, 18, 32, 24, 8, 2]", "actinoid", 9, 10));
-        //result.Add(new ElementInfo(95, "Am", "Americium", "(243)", "[2, 8, 18, 32, 25, 8, 2]", "actinoid", 10, 10));
-        //result.Add(new ElementInfo(96, "Cm", "Curium", "(247)", "[2, 8, 18, 32, 25, 9, 2]", "actinoid", 11, 10));
-        //result.Add(new ElementInfo(97, "Bk", "Berkelium", "(247)", "[2, 8, 18, 32, 27, 8, 2]", "actinoid", 12, 10));
-        //result.Add(new ElementInfo(98, "Cf", "Californium", "(251)", "[2, 8, 18, 32, 28, 8, 2]", "actinoid", 13, 10));
-        //result.Add(new ElementInfo(99, "Es", "Einsteinium", "(252)", "[2, 8, 18, 32, 29, 8, 2]", "actinoid", 14, 10));
-        //result.Add(new ElementInfo(100, "Fm", "Fermium", "(257)", "[2, 8, 18, 32, 30, 8, 2]", "actinoid", 15, 10));
-        //result.Add(new ElementInfo(101, "Md", "Mendelevium", "(258)", "[2, 8, 18, 32, 31, 8, 2]", "actinoid", 16, 10));
-        //result.Add(new ElementInfo(102, "No", "Nobelium", "(259)", "[2, 8, 18, 32, 32, 8, 2]", "actinoid", 17, 10));
-        //result.Add(new ElementInfo(103, "Lr", "Lawrencium", "(266)", "[2, 8, 18, 32, 32, 8, 3]", "actinoid", 18, 10));
+        result.Add(new ElementInfo(89, "Ac", "Actinium", "(227)", "[2, 8, 18, 32, 18, 9, 2]", "actinoid", 4, 10));
+        result.Add(new ElementInfo(90, "Th", "Thorium", 232.04, "[2, 8, 18, 32, 18, 10, 2]", "actinoid", 5, 10));
+        result.Add(new ElementInfo(91, "Pa", "Protactinium", 231.04, "[2, 8, 18, 32, 20, 9, 2]", "actinoid", 6, 10));
+        result.Add(new ElementInfo(92, "U", "Uranium", 238.03, "[2, 8, 18, 32, 21, 9, 2]", "actinoid", 7, 10));
+        result.Add(new ElementInfo(93, "Np", "Neptunium", "(237)", "[2, 8, 18, 32, 22, 9, 2]", "actinoid", 8, 10));
+        result.Add(new ElementInfo(94, "Pu", "Plutonium", "(244)", "[2, 8, 18, 32, 24, 8, 2]", "actinoid", 9, 10));
+        result.Add(new ElementInfo(95, "Am", "Americium", "(243)", "[2, 8, 18, 32, 25, 8, 2]", "actinoid", 10, 10));
+        result.Add(new ElementInfo(96, "Cm", "Curium", "(247)", "[2, 8, 18, 32, 25, 9, 2]", "actinoid", 11, 10));
+        result.Add(new ElementInfo(97, "Bk", "Berkelium", "(247)", "[2, 8, 18, 32, 27, 8, 2]", "actinoid", 12, 10));
+        result.Add(new ElementInfo(98, "Cf", "Californium", "(251)", "[2, 8, 18, 32, 28, 8, 2]", "actinoid", 13, 10));
+        result.Add(new ElementInfo(99, "Es", "Einsteinium", "(252)", "[2, 8, 18, 32, 29, 8, 2]", "actinoid", 14, 10));
+        result.Add(new ElementInfo(100, "Fm", "Fermium", "(257)", "[2, 8, 18, 32, 30, 8, 2]", "actinoid", 15, 10));
+        result.Add(new ElementInfo(101, "Md", "Mendelevium", "(258)", "[2, 8, 18, 32, 31, 8, 2]", "actinoid", 16, 10));
+        result.Add(new ElementInfo(102, "No", "Nobelium", "(259)", "[2, 8, 18, 32, 32, 8, 2]", "actinoid", 17, 10));
+        result.Add(new ElementInfo(103, "Lr", "Lawrencium", "(266)", "[2, 8, 18, 32, 32, 8, 3]", "actinoid", 18, 10));
         result.Add(new ElementInfo(104, "Rf", "Rutherfordium", "(267)", "[2, 8, 18, 32, 32, 10, 2]", "transition-metal", 4, 7));
         result.Add(new ElementInfo(105, "Db", "Dubnium", "(268)", "[2, 8, 18, 32, 32, 11, 2]", "transition-metal", 5, 7));
         result.Add(new ElementInfo(106, "Sg", "Seaborgium", "(269)", "[2, 8, 18, 32, 32, 12, 2]", "transition-metal", 6, 7));
@@ -343,5 +334,13 @@
         result.Add(new ElementInfo(301, "Attr", "Attributions", "(X)", "[0]", "alkaline-earth-metal", 7, 2));
 
         return result;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
     }
 }

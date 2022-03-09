@@ -6,13 +6,15 @@
     {
         public uint Number { get; set; }
         public string Symbol { get; set; }
-        public string Name { get; set; }
+        public string ElementName { get; set; }
         public string Mass { get; set; }
-        public IEnumerable<uint> Weight { get; set; }
-        public string WeightStr { get; set; }
+        public IEnumerable<uint> Weights { get; set; }
+        public string Weight { get; set; }
         public string Material { get; set; }
-        public uint Column { get; set; }
-        public uint Row { get; set; }
+        public uint GridColumn { get; set; }
+        public uint GridRow { get; set; }
+
+        public ElementInfo() { }
 
         public ElementInfo(uint number, string symbol, string name, double mass, IEnumerable<uint> weight, string material, uint column, uint row) :
             this(number, symbol, name, mass.ToString(), weight, material, column, row)
@@ -23,13 +25,13 @@
         {
             this.Number = number;
             this.Symbol = symbol;
-            this.Name = name;
+            this.ElementName = name;
             this.Mass = mass;
-            this.Weight = weight;
-            this.WeightStr = "[" + string.Join(',', weight) + "]";
+            this.Weights = weight;
+            this.Weight = "[" + string.Join(',', weight) + "]";
             this.Material = material;
-            this.Column = column;
-            this.Row = row;
+            this.GridColumn = column;
+            this.GridRow = row;
         }
 
         public ElementInfo(uint number, string symbol, string name, double mass, string weightstr, string material, uint column, uint row) :
@@ -41,12 +43,12 @@
         {
             this.Number = number;
             this.Symbol = symbol;
-            this.Name = name;
+            this.ElementName = name;
             this.Mass = mass;
-            this.WeightStr = weightstr;
+            this.Weight = weightstr;
             this.Material = material;
-            this.Column = column;
-            this.Row = row;
+            this.GridColumn = column;
+            this.GridRow = row;
 
             var result = new List<uint>();
 
@@ -58,7 +60,7 @@
                 }
             }
 
-            this.Weight = result;
+            this.Weights = result;
         }
     }
 }

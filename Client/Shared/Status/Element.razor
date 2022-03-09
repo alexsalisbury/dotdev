@@ -17,12 +17,12 @@
 
     public uint Number => Info.Number;
     public string Symbol => Info.Symbol;
-    public string Name => Info.Name;
+    public string Name => Info.ElementName;
     //public string Mass => Info.Mass;
     //public string WeightStr => Info.WeightStr;
     //public IEnumerable<uint> Weights => Info.Weight ?? new List<uint>();
     public string Material => Info.Material;
-    public uint Column => Info.Column;
-    public uint Row => Info.Row;
+    public uint Column => Info.GridColumn;
+    public uint Row => Info.GridRow;
     public string ElementClass => $"element {Material} {StatusKey}";
 }
