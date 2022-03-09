@@ -58,15 +58,15 @@
     {
         if (elements == null)
         {
-            //try
-            //{
-            //    elements = await Http.GetFromJsonAsync<ElementInfo[]>("/api/ElementFetch");
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine(ex.ToString());
-            elements = PopulateDefaultElements();
-            //}
+            try
+            {
+                elements = await Http.GetFromJsonAsync<ElementInfo[]>("/api/ElementFetch");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                elements = PopulateDefaultElements();
+            }
         }
 
         return elements;
