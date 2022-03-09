@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
+    using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -20,21 +21,32 @@
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
+            log.LogInformation("ElementFetch!");
             var connStr = Environment.GetEnvironmentVariable("dotdev_cs");
             var query = "select * from view_Elements";
 
-            var fetched = await FetchAsync<ElementInfo>(connStr, query);
+            var fetched = await FetchAsync<ElementInfo>(connStr, query, log);
+            log.LogInformation("Returned from DB for ElementFetch {retrieved}", fetched?.Count());
             var result = fetched ?? MakeDefaults() ?? new List<ElementInfo>();
 
             return new OkObjectResult(result);
         }
 
-        private static async Task<IEnumerable<T>> FetchAsync<T>(string connStr, string query)
+        private static async Task<IEnumerable<T>> FetchAsync<T>(string connStr, string query, ILogger log)
         {
-            using (var conn = new SqlConnection(connStr))
+            try
             {
-                conn.Open();
-                return await conn.QueryAsync<T>(query, commandType: CommandType.Text);
+                using (var conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    log.LogInformation("connected to DB for ElementFetch!");
+                    return await conn.QueryAsync<T>(query, commandType: CommandType.Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, "ElementFetch DB fail");
+                throw;
             }
         }
 
