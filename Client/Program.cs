@@ -11,3 +11,4 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddSingleton<IHoneycomb, Honeycomb>();
 
 await builder.Build().RunAsync();
+ 
