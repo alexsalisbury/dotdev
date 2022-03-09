@@ -2,19 +2,43 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlClient;
+    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Azure.WebJobs;
     using Microsoft.Azure.WebJobs.Extensions.Http;
     using Microsoft.Extensions.Logging;
+    using Dapper;
     using Dotdev.Core.Element;
 
     public static class ElementFetchFunction
     {
         [FunctionName("ElementFetch")]
-        public static IActionResult Run(
+        public async static Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             ILogger log)
+        {
+            var connStr = Environment.GetEnvironmentVariable("dotdev_cs");
+            var query = "select * from view_Elements";
+
+            var fetched = await FetchAsync<ElementInfo>(connStr, query);
+            var result = fetched ?? MakeDefaults() ?? new List<ElementInfo>();
+
+            return new OkObjectResult(result);
+        }
+
+        private static async Task<IEnumerable<T>> FetchAsync<T>(string connStr, string query)
+        {
+            using (var conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+                return await conn.QueryAsync<T>(query, commandType: CommandType.Text);
+            }
+        }
+
+        private static IEnumerable<ElementInfo> MakeDefaults()
         {
             var result = new List<ElementInfo>();
             //string[] categories = ["alkali-metals", "alkaline-earth-metals", "lanthanoids", "actinoids", "transition-metals", "post-transition-metals", "metalloids", "other-nonmetals", "noble-gasses", "unknown"];
@@ -138,7 +162,8 @@
             result.Add(new ElementInfo(116, "Lv", "Livermorium", "(293)", "[2, 8, 18, 32, 32, 18, 6]", "unknown", 16, 7));
             result.Add(new ElementInfo(117, "Ts", "Tennessine", "(294)", "[2, 8, 18, 32, 32, 18, 7]", "unknown", 17, 7));
             result.Add(new ElementInfo(118, "Og", "Oganesson", "(294)", "[2, 8, 18, 32, 32, 18, 8]", "unknown", 18, 7));
-            return new OkObjectResult(result);
+            return result;
         }
+
     }
 }

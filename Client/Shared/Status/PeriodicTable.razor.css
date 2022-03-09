@@ -4,15 +4,14 @@
     --color-yellow: #EFC958;
     --color-green: #4AB19D;
     --color-darkblue: #344e5c;
+    --color-black: #000000;
     --color-purple: #A6206A;
     --color-pink: #F69A9A;
     --color-gold: #f9cdaE;
-    --color-grey: #647277;
+    --color-grey: #222222;
     --color-lightblue: #BAD3D1;
 }
 
-body {
-}
 
 .periodic-table {
     display: grid;
@@ -75,6 +74,7 @@ body {
 
 ::deep .element .symbol {
     font-size: 2.0vw;
+    font-family:'Times New Roman', Times, serif;
 }
 
 ::deep .element .name {
@@ -82,12 +82,7 @@ body {
 }
 
 ::deep .element .status {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
     padding: 2px;
-    text-align: center;
     visibility: hidden;
 }
 
@@ -235,6 +230,9 @@ body {
     background-color: rgba(58, 221, 11, 0.1);
     color: #4AB15D;
 }
+::deep .online:hover .name {
+    color: #4AB15D;
+}
 
 ::deep .offline .symbol {
     color: #ff0000;
@@ -245,17 +243,38 @@ body {
     background-color: rgba(256, 0, 0, 0.1);
     color: #ff0000;
 }
+::deep .offline:hover .name {
+    color: #ff0000;
+}
 
 ::deep .untracked .symbol {
     color: #BAD3D1;
     text-shadow: 0 0 0.3vw #BAD3D1;
 }
 
+::deep .name {
+    color: #444444;
+    text-shadow: 0 0 0.1vw #CC33CC;
+}
+
+::deep .unknown .name {
+    visibility: hidden;
+}
+
+    ::deep .unknown .name:hover {
+        visibility: visible;
+        color: #444444;
+    }
+
 ::deep .untracked:hover {
     background-color: rgba(186, 211, 209, 0.2);
     color: #BAD3D1;
 }
 
+    ::deep .untracked:hover .name {
+        color: #BAD3D1;
+    }
+
 ::deep .unknown .symbol {
-    color: #777777;
+    color: #444444;
 }
