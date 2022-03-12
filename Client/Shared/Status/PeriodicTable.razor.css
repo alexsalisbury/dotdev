@@ -234,6 +234,20 @@
     color: #4AB15D;
 }
 
+::deep .delayed .symbol {
+    color: #EFC958;
+    text-shadow: 0 0 0.3vw #EFC958;
+}
+
+::deep .delayed:hover {
+    background-color: rgba(256, 200, 0, 0.1);
+    color: #EFC958;
+}
+
+    ::deep .delayed:hover .name {
+        color: #EFC958;
+    }
+
 ::deep .offline .symbol {
     color: #ff0000;
     text-shadow: 0 0 0.3vw #ff0000;

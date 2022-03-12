@@ -25,7 +25,7 @@
             if (!squares.ContainsKey(e.Number) || squares[e.Number] == null)
             {
                 var server = servers.FirstOrDefault(s => s.Number == e.Number);
-                squares[e.Number] = new Square() { Info = e,  Status = server };
+                squares[e.Number] = new Square() { Info = e, Status = server };
             }
         }
 
@@ -38,8 +38,8 @@
         });
 
         await hubConnection.StartAsync();
-}
-        
+    }
+
     //protected override async Task OldInitializedAsync()
     //{
     //    var servers = await GetServers();
@@ -74,17 +74,25 @@
 
     protected async Task<IEnumerable<ServerInfo>> GetServers()
     {
-        return await GetExampleServers();
+        try
+        {
+            return await Http.GetFromJsonAsync<ServerInfo[]>("/api/ServerFetch");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+            return GetExampleServers();
+        }
     }
 
 
-    protected async Task<IEnumerable<ServerInfo>> GetExampleServers()
+    protected IEnumerable<ServerInfo> GetExampleServers()
     {
         var h = new ServerInfo()
         {
             Number = 1,
             Name = "Hydrogen",
-            Status = "online",
+            LastStatus = "online",
             DeviceType = 1,
             IP = ".1",
             Symbol = "H",
@@ -94,7 +102,7 @@
         {
             Number = 2,
             Name = "Helium",
-            Status = "untracked",
+            LastStatus = "untracked",
             DeviceType = 1,
             IP = ".2",
             Symbol = "He",
@@ -104,7 +112,7 @@
         {
             Number = 3,
             Name = "Lithium",
-            Status = "offline",
+            LastStatus = "offline",
             DeviceType = 2,
             IP = ".3",
             Symbol = "LI",
@@ -114,7 +122,7 @@
         {
             Number = 19,
             Name = "Potassium",
-            Status = "online",
+            LastStatus = "delayed",
             DeviceType = 3,
             IP = ".19",
             Symbol = "K",
@@ -124,7 +132,7 @@
         {
             Number = 28,
             Name = "Nickel",
-            Status = "untracked",
+            LastStatus = "untracked",
             DeviceType = 6,
             IP = ".28",
             Symbol = "Ni",
@@ -134,7 +142,7 @@
         {
             Number = 29,
             Name = "Copper",
-            Status = "offline",
+            LastStatus = "offline",
             DeviceType = 7,
             IP = ".29",
             Symbol = "Cu",
@@ -144,7 +152,7 @@
         {
             Number = 46,
             Name = "Palladium",
-            Status = "untracked",
+            LastStatus = "untracked",
             DeviceType = 7,
             IP = ".54",
             Symbol = "Pd",
@@ -154,7 +162,7 @@
         {
             Number = 47,
             Name = "Silver",
-            Status = "untracked",
+            LastStatus = "untracked",
             DeviceType = 7,
             IP = ".47",
             Symbol = "Ag",
@@ -164,7 +172,7 @@
         {
             Number = 53,
             Name = "Iodine",
-            Status = "untracked",
+            LastStatus = "untracked",
             DeviceType = 4,
             IP = ".53",
             Symbol = "I",
@@ -174,7 +182,7 @@
         {
             Number = 54,
             Name = "Xenon",
-            Status = "untracked",
+            LastStatus = "untracked",
             DeviceType = 9,
             IP = ".54",
             Symbol = "Xe",
@@ -184,7 +192,7 @@
         {
             Number = 65,
             Name = "Holmium",
-            Status = "untracked",
+            LastStatus = "untracked",
             DeviceType = 8,
             IP = ".54",
             Symbol = "Ho",
@@ -192,7 +200,6 @@
         };
 
         var result = new List<ServerInfo>();
-        await Task.Delay(500);
         result.Add(h);
         result.Add(he);
         result.Add(li);

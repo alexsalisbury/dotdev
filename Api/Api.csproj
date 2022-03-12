@@ -4,9 +4,11 @@
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
     <RootNamespace>Dotdev.Api</RootNamespace>
     <AssemblyName>Dotdev.$(MSBuildProjectName)</AssemblyName>
+    <UserSecretsId>c9def37d-9cb0-4b1d-89e3-5fc29e7a6fb0</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.1.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />	
   </ItemGroup>
