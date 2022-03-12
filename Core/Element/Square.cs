@@ -8,6 +8,6 @@
         public int Column => Info?.GridColumn ?? 0;
         public int Row => Info?.GridRow ?? 0;
         public string Name => Status?.Name ?? Info?.ElementName ?? "Unknown";
-        public string ServerStatusClass => Status?.Status ?? "unknown";
+        public string ServerStatusClass => Status?.LastStatus ?? "unknown";
     }
 }
