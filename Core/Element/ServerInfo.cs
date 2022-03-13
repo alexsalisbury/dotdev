@@ -4,7 +4,7 @@
 
     public record ServerInfo
     {
-        public uint Number { get; set; }
+        public int Number { get; set; }
         public string Symbol { get; set; }
         public string LastStatus { get; set; }
         public string Name { get; set; }
