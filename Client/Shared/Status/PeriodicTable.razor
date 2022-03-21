@@ -31,8 +31,9 @@
 
         hubConnection = new HubConnectionBuilder().WithUrl(url).Build();
 
-        hubConnection.On<int, DateTimeOffset>("status", (id, timestamp) =>
+        hubConnection.On<int, DateTimeOffset>("elementstatus", (id, timestamp) =>
         {
+            Console.WriteLine("ElementStatus data point received.");
             squares[id].SetLastSeen(timestamp);
             StateHasChanged();
         });
