@@ -23,7 +23,7 @@
         {
             log.LogInformation("ElementFetch!");
             var connStr = Environment.GetEnvironmentVariable("dotdev_cs");
-            var query = "select * from view_Elements";
+            var query = "select * from view_Element";
 
             var fetched = await FetchAsync<ElementInfo>(connStr, query, log);
             log.LogInformation("Returned from DB for ElementFetch {retrieved}", fetched?.Count());
