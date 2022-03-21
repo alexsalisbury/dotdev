@@ -10,7 +10,7 @@ public static class HubNegotiateFunction
     [FunctionName("negotiate")]
     public static SignalRConnectionInfo Run(
         [HttpTrigger(AuthorizationLevel.Anonymous)] HttpRequest req,
-        [SignalRConnectionInfo(HubName = "homedotcloud")] SignalRConnectionInfo connectionInfo)
+        [SignalRConnectionInfo(HubName = "SignalRServiceHomeDotCloud")] SignalRConnectionInfo connectionInfo)
     {
         return connectionInfo;
     }
