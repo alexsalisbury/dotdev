@@ -8,8 +8,25 @@
 
     [Parameter]
     public Square SQ { get; set; }
+    [Parameter]
+    public EventCallback<int> SquareUpdate { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.SQ.OnChange += SquareUpdated;
+    }
 
     public string SquareClass => $"square c{SQ.Column} r{SQ.Row}";
     public string OverlayClass => $"overlay {ServerStatus}";
     public string ServerStatus => SQ?.ServerStatusClass ?? "unknown";
+
+    private void SquareUpdated(object sender, EventArgs e)
+    {
+        SquareUpdate.InvokeAsync();
+    }      
+
+    public async ValueTask DisposeAsync()
+    {
+        this.SQ.OnChange -= SquareUpdated;
+    }  
 }

@@ -8,7 +8,7 @@
 <div class="periodic-table">
     @foreach (var sq in squares.Values)
     {
-        <StatusElementSquare SQ="sq" />
+        <StatusElementSquare SQ=@sq SquareUpdate=@SquareUpdated />
     }
 </div>
 
@@ -52,7 +52,7 @@
                 var sqCount = squares?.Count ?? 0;
                 logger.LogWarning("Couldn't find square. Known:{sqCount}", sqCount);
             }
-            
+
             StateHasChanged();
         });
 
@@ -64,6 +64,11 @@
         //});
 
         await elementStatus.StartAsync();
+    }
+
+    private void SquareUpdated()
+    {
+        StateHasChanged();
     }
 
     //protected override async Task OldInitializedAsync()
