@@ -31,7 +31,8 @@
             return delta?.TotalMinutes switch
             {
                 null => "unknown",
-                < 6 => "active",
+                < 2 => "active",
+                < 6 => "online",
                 < 11 => "delayed",
                 > 11 => "offline",
                 _ => "unknown"
