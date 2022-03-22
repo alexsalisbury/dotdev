@@ -1,5 +1,6 @@
 ﻿@using Dotdev.Core.Element;
 @using Microsoft.AspNetCore.SignalR.Client;
+
 @inject HttpClient Http;
 @inject ILogger<PeriodicTable> logger;
 @implements IAsyncDisposable;
@@ -13,13 +14,14 @@
 
 @code {
     private const string url = "https://digitalhomehubfunctions.azurewebsites.net/api/";
-    private HubConnection? hubConnection;
+    private HubConnection? elementStatus;
     private IEnumerable<ElementInfo> elements = null;
     private Dictionary<int, Square> squares = new();
 
     protected override async Task OnInitializedAsync()
     {
         var servers = await GetServers();
+        logger.LogInformation("Servers fetched.");
 
         foreach (var e in await GetElements())
         {
@@ -29,18 +31,28 @@
                 squares[e.Number] = new Square() { Info = e, Status = server };
             }
         }
+        logger.LogInformation("Squares constructed.");
 
-        hubConnection = new HubConnectionBuilder().WithUrl(url).Build();
+        elementStatus = new HubConnectionBuilder().WithUrl(url).Build();
         logger.LogInformation("Connected");
 
-        hubConnection.On<int, long>("elementstatus", (id, timestamp) =>
+        elementStatus.On<int, long>("elementstatus", (id, timestamp) =>
         {
             logger.LogInformation("ElementStatus data point received. {id} {timestamp}", id, timestamp );
-            squares[id].SetLastSeen(DateTimeOffset.FromUnixTimeSeconds(timestamp));
+            var ts = DateTimeOffset.FromUnixTimeSeconds(timestamp);
+
+            squares[id].SetLastSeen(ts);
             StateHasChanged();
         });
 
-        await hubConnection.StartAsync();
+        //hubConnection.On<int, long>("elementstatus", (id, timestamp) =>
+        //{
+        //    logger.LogInformation("ElementStatus data point received. {id} {timestamp}", id, timestamp );
+        //    squares[id].SetLastSeen(DateTimeOffset.FromUnixTimeSeconds(timestamp));
+        //    StateHasChanged();
+        //});
+
+        await elementStatus.StartAsync();
     }
 
     //protected override async Task OldInitializedAsync()
@@ -348,9 +360,9 @@
 
     public async ValueTask DisposeAsync()
     {
-        if (hubConnection is not null)
+        if (elementStatus is not null)
         {
-            await hubConnection.DisposeAsync();
+            await elementStatus.DisposeAsync();
         }
     }
 }
