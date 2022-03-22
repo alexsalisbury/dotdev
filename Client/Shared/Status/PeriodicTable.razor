@@ -41,7 +41,18 @@
             logger.LogInformation("ElementStatus data point received. {id} {timestamp}", id, timestamp );
             var ts = DateTimeOffset.FromUnixTimeSeconds(timestamp);
 
-            squares[id].SetLastSeen(ts);
+            if (squares.ContainsKey(id))
+            {
+                var sq = squares[id];
+                logger.LogInformation("Square {square} found", sq.Name );
+                sq.SetLastSeen(ts);
+            }
+            else
+            {
+                var sqCount = squares?.Count ?? 0;
+                logger.LogWarning("Couldn't find square. Known:{sqCount}", sqCount);
+            }
+            
             StateHasChanged();
         });
 
