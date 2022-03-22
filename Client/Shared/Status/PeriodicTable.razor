@@ -1,7 +1,8 @@
-﻿@using Dotdev.Core.Element
-@using Microsoft.AspNetCore.SignalR.Client
-@inject HttpClient Http
-@implements IAsyncDisposable
+﻿@using Dotdev.Core.Element;
+@using Microsoft.AspNetCore.SignalR.Client;
+@inject HttpClient Http;
+@inject ILogger<PeriodicTable> logger;
+@implements IAsyncDisposable;
 
 <div class="periodic-table">
     @foreach (var sq in squares.Values)
@@ -30,11 +31,12 @@
         }
 
         hubConnection = new HubConnectionBuilder().WithUrl(url).Build();
+        logger.LogInformation("Connected");
 
-        hubConnection.On<int, DateTimeOffset>("elementstatus", (id, timestamp) =>
+        hubConnection.On<int, long>("elementstatus", (id, timestamp) =>
         {
-            Console.WriteLine("ElementStatus data point received.");
-            squares[id].SetLastSeen(timestamp);
+            logger.LogInformation("ElementStatus data point received. {id} {timestamp}", id, timestamp );
+            squares[id].SetLastSeen(DateTimeOffset.FromUnixTimeSeconds(timestamp));
             StateHasChanged();
         });
 
@@ -65,7 +67,7 @@
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                logger.LogError(ex, "Failed to fetch elements, using defaults.");
                 elements = PopulateDefaultElements();
             }
         }
@@ -81,7 +83,7 @@
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.ToString());
+                logger.LogError(ex, "Failed to fetch ServerInfo, using defaults.");
             return GetExampleServers();
         }
     }
