@@ -221,6 +221,20 @@
     grid-row: 12
 }
 
+::deep .active .symbol {
+    color: #4AB15D;
+    text-shadow: 0 0 0.3vw #4AB15D;
+}
+
+::deep .active:hover {
+    background-color: rgba(158, 221, 31, 0.1);
+    color: #4AB15D;
+}
+
+    ::deep .active:hover .name {
+        color: #4AB15D;
+    }
+
 ::deep .online .symbol {
     color: #4AB15D;
     text-shadow: 0 0 0.3vw #4AB15D;
