@@ -2,7 +2,14 @@
 {
     public class Square
     {
-        public void SetLastSeen(DateTimeOffset timestamp) => this.Status = (this.Status == null ? null : this.Status with { LastSeen = timestamp }); 
+
+        public event EventHandler OnChange;
+
+        public void SetLastSeen(DateTimeOffset timestamp)
+        {
+            this.Status = (this.Status == null ? null : this.Status with { LastSeen = timestamp });
+            this.OnChange?.Invoke(this, new EventArgs());
+        }
         public ElementInfo Info { get; set; }
         public ServerInfo? Status { get; set; }
         public int Column => Info?.GridColumn ?? 0;
