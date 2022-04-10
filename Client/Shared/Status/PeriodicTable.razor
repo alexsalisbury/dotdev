@@ -15,15 +15,59 @@
 @code {
     private const string url = "https://digitalhomehubfunctions.azurewebsites.net/api/";
     private HubConnection? elementStatus;
-    private IEnumerable<ElementInfo> elements = null;
+    private IEnumerable<ElementInfo> elements = Array.Empty<ElementInfo>();
     private Dictionary<int, Square> squares = new();
 
     protected override async Task OnInitializedAsync()
     {
+        await Setup();
+    }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            elementStatus = new HubConnectionBuilder().WithUrl(url).Build();
+            logger.LogInformation("Connected");
+
+            elementStatus.On<int, long>("elementstatus", (id, timestamp) =>
+            {
+                logger.LogInformation("ElementStatus data point received. {id} {timestamp}", id, timestamp);
+                var ts = DateTimeOffset.FromUnixTimeSeconds(timestamp);
+
+                if (squares.ContainsKey(id))
+                {
+                    var sq = squares[id];
+                    logger.LogInformation("Square {square} found", sq.Name);
+                    sq.SetLastSeen(ts);
+                }
+                else
+                {
+                    var sqCount = squares?.Count ?? 0;
+                    logger.LogWarning("Couldn't find square. Known:{sqCount}", sqCount);
+                }
+
+                StateHasChanged();
+            });
+
+            //hubConnection.On<int, long>("elementstatus", (id, timestamp) =>
+            //{
+            //    logger.LogInformation("ElementStatus data point received. {id} {timestamp}", id, timestamp );
+            //    squares[id].SetLastSeen(DateTimeOffset.FromUnixTimeSeconds(timestamp));
+            //    StateHasChanged();
+            //});
+
+            await elementStatus.StartAsync();
+        }
+    }
+
+    protected async Task Setup()
+    {
+        var eTask = GetElements();
         var servers = await GetServers();
         logger.LogInformation("Servers fetched.");
 
-        foreach (var e in await GetElements())
+        foreach (var e in await eTask)
         {
             if (!squares.ContainsKey(e.Number) || squares[e.Number] == null)
             {
@@ -32,44 +76,9 @@
             }
         }
         logger.LogInformation("Squares constructed.");
-
-        elementStatus = new HubConnectionBuilder().WithUrl(url).Build();
-        logger.LogInformation("Connected");
-
-        elementStatus.On<int, long>("elementstatus", (id, timestamp) =>
-        {
-            logger.LogInformation("ElementStatus data point received. {id} {timestamp}", id, timestamp );
-            var ts = DateTimeOffset.FromUnixTimeSeconds(timestamp);
-
-            if (squares.ContainsKey(id))
-            {
-                var sq = squares[id];
-                logger.LogInformation("Square {square} found", sq.Name );
-                sq.SetLastSeen(ts);
-            }
-            else
-            {
-                var sqCount = squares?.Count ?? 0;
-                logger.LogWarning("Couldn't find square. Known:{sqCount}", sqCount);
-            }
-
-            StateHasChanged();
-        });
-
-        //hubConnection.On<int, long>("elementstatus", (id, timestamp) =>
-        //{
-        //    logger.LogInformation("ElementStatus data point received. {id} {timestamp}", id, timestamp );
-        //    squares[id].SetLastSeen(DateTimeOffset.FromUnixTimeSeconds(timestamp));
-        //    StateHasChanged();
-        //});
-
-        await elementStatus.StartAsync();
     }
 
-    private void SquareUpdated()
-    {
-        StateHasChanged();
-    }
+    private void SquareUpdated() => StateHasChanged();
 
     //protected override async Task OldInitializedAsync()
     //{
@@ -137,7 +146,7 @@
             DeviceType = 1,
             IP = ".2",
             Symbol = "He",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-34)
+            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-3)
         };
         var li = new ServerInfo()
         {
@@ -146,8 +155,8 @@
             LastStatus = "offline",
             DeviceType = 2,
             IP = ".3",
-            Symbol = "LI",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-5)
+            Symbol = "Li",
+            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
         };
         var k = new ServerInfo()
         {
@@ -157,7 +166,7 @@
             DeviceType = 3,
             IP = ".19",
             Symbol = "K",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-5)
+            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-45)
         };
         var ni = new ServerInfo()
         {
@@ -167,7 +176,7 @@
             DeviceType = 6,
             IP = ".28",
             Symbol = "Ni",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-34)
+            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
         };
         var cu = new ServerInfo()
         {
@@ -177,7 +186,7 @@
             DeviceType = 7,
             IP = ".29",
             Symbol = "Cu",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-34)
+            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
         };
         var pd = new ServerInfo()
         {
@@ -187,7 +196,7 @@
             DeviceType = 7,
             IP = ".54",
             Symbol = "Pd",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-5)
+            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
         };
         var ag = new ServerInfo()
         {
@@ -197,7 +206,7 @@
             DeviceType = 7,
             IP = ".47",
             Symbol = "Ag",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-34)
+            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
         };
         var io = new ServerInfo()
         {
@@ -207,7 +216,7 @@
             DeviceType = 4,
             IP = ".53",
             Symbol = "I",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-5)
+            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
         };
         var xe = new ServerInfo()
         {
@@ -217,7 +226,7 @@
             DeviceType = 9,
             IP = ".54",
             Symbol = "Xe",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-5)
+            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
         };
         var ho = new ServerInfo()
         {
@@ -227,7 +236,7 @@
             DeviceType = 8,
             IP = ".54",
             Symbol = "Ho",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-5)
+            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
         };
 
         var result = new List<ServerInfo>();
