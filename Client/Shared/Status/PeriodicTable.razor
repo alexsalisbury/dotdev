@@ -20,11 +20,23 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Setup();
+        var servers = GetExampleServers();
+        foreach (var e in PopulateDefaultElements())
+        {
+            if (!squares.ContainsKey(e.Number) || squares[e.Number] == null)
+            {
+                var server = servers.FirstOrDefault(s => s.Number == e.Number);
+                squares[e.Number] = new Square( e, server );
+            }
+        }
+        logger.LogInformation("Squares constructed.");
     }
 
     protected override async void OnAfterRender(bool firstRender)
-    {
+    {        
+        await SetupServers();
+        await SetupElements();
+
         if (firstRender)
         {
             elementStatus = new HubConnectionBuilder().WithUrl(url).Build();
@@ -61,18 +73,31 @@
         }
     }
 
-    protected async Task Setup()
+    protected async Task SetupElements()
     {
-        var eTask = GetElements();
-        var servers = await GetServers();
-        logger.LogInformation("Servers fetched.");
-
-        foreach (var e in await eTask)
+        foreach (var e in await GetElements())
         {
-            if (!squares.ContainsKey(e.Number) || squares[e.Number] == null)
+            if (!squares.ContainsKey(e.Number) ||  null == squares[e.Number])
             {
-                var server = servers.FirstOrDefault(s => s.Number == e.Number);
-                squares[e.Number] = new Square() { Info = e, Status = server };
+                squares[e.Number] = new Square(e, null);
+            }
+            else
+            {
+                squares[e.Number].SetElement(e);
+            }
+        }
+
+        logger.LogInformation("Squares constructed.");
+    }
+
+    protected async Task SetupServers()
+    {
+        foreach (var s in await GetServers())
+        {
+            if (!squares.ContainsKey(s.Number) || squares[s.Number] == null)
+            {
+                var e = elements.FirstOrDefault(e => e.Number == s.Number);
+                squares[s.Number] = new Square(e,s);
             }
         }
         logger.LogInformation("Squares constructed.");
