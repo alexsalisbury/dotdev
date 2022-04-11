@@ -33,12 +33,12 @@
     }
 
     protected override async void OnAfterRender(bool firstRender)
-    {        
-        await SetupServers();
-        await SetupElements();
-
+    {
         if (firstRender)
         {
+            await SetupServers();
+            await SetupElements();
+
             elementStatus = new HubConnectionBuilder().WithUrl(url).Build();
             logger.LogInformation("Connected");
 
