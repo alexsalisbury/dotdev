@@ -31,6 +31,7 @@
             var result = GetExampleServers() ?? new List<ServerInfo>();
             return new OkObjectResult(result);
         }
+
         private static IEnumerable<ServerInfo> GetExampleServers()
         {
             var h = new ServerInfo()
@@ -60,7 +61,17 @@
                 LastStatus = "offline",
                 DeviceType = 2,
                 IP = ".3",
-                Symbol = "LI",
+                Symbol = "Li",
+                LastSeen = DateTimeOffset.UtcNow.AddMonths(-5)
+            };
+            var cl = new ServerInfo()
+            {
+                Number = 17,
+                Name = "Chlorine",
+                LastStatus = "online",
+                DeviceType = 4,
+                IP = ".17",
+                Symbol = "Cl",
                 LastSeen = DateTimeOffset.UtcNow.AddSeconds(-5)
             };
             var k = new ServerInfo()
@@ -139,7 +150,7 @@
                 Name = "Holmium",
                 LastStatus = "untracked",
                 DeviceType = 8,
-                IP = ".54",
+                IP = ".65",
                 Symbol = "Ho",
                 LastSeen = DateTimeOffset.UtcNow.AddMinutes(-2252)
             };
@@ -148,6 +159,7 @@
             result.Add(h);
             result.Add(he);
             result.Add(li);
+            result.Add(cl);
             result.Add(k);
             result.Add(ni);
             result.Add(cu);
