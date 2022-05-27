@@ -4,6 +4,7 @@
     {
         private Dictionary<uint, HexItem> hexMap = new();
         private static bool globalUnlock = false;
+        private HexItem root;
 
         public event EventHandler<EventArgs> HoneycombChanged;
 
@@ -13,6 +14,12 @@
         //    style.HexClass = unlock ? "hex" : "hexghost";
         //    return new Ghost(location, style);
         //}
+
+
+        public ValueTask<bool> AddGhosts(HexLocation location) => WalkGhosts(location, false);
+        public ValueTask<bool> EnableGhosts(HexLocation location) => WalkGhosts(location, true);
+
+        public async Task UnlockAsync() => WalkGhosts(this.root.Location, true, true);
 
         public IEnumerable<HexItem> GetItems() => hexMap.Values.ToArray();
 
@@ -47,19 +54,27 @@
 
         public bool AddRoot(HexLocation location)
         {
-            return this.AddItem(new IntroHex(location));
+            root = new IntroHex(location);
+            return this.AddItem(root);
         }
 
-        public bool AddGhosts(HexLocation location) => WalkGhosts(location, false);
-        public bool EnableGhosts(HexLocation location) => WalkGhosts(location, true);
-        private bool WalkGhosts(HexLocation location, bool enable)
+        private async ValueTask<bool> WalkGhosts(HexLocation location, bool enable, bool recurse = false)
         {
-            bool success = true;
+            if (recurse)
+            {
+                await Task.Delay(1000);
+            }
 
+            bool success = true;
             var source = hexMap[location.GridIndex];
+
             foreach (var s in source?.GetGhosts(enable) ?? new List<HexItem>())
             {
                 success &= this.AddItem(s);
+                if (recurse)
+                {
+                    await this.WalkGhosts(s.Location, enable, recurse);
+                }
             }
 
             return success;

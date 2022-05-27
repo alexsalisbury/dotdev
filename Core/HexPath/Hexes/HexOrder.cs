@@ -4,6 +4,7 @@
     {
         Blank = 0,
         Intro = 1,
-        About = 2
+        About = 2,
+        Status = 3
     }
 }

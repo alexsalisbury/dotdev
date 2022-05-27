@@ -26,7 +26,11 @@
 
         public void SetLastSeen(DateTimeOffset timestamp)
         {
-            this.Status = (this.Status == null ? null : this.Status with { LastSeen = timestamp });
+            this.Status = this.Status switch
+            {
+                null => ServerInfo.Generate(this.Info.Number, timestamp),
+                _ => this.Status with { LastSeen = timestamp }
+            };
             this.OnChange?.Invoke(this, new EventArgs());
         }
 

@@ -9,6 +9,7 @@
         public string? Shade { get; set; }
         public string? HexClass { get; set; }
         public string? Target { get; set; }
+        public string? Image { get; set; }
         public bool IsGhost { get; set; }
         public string Size => size.ToString();
         public string Points => $"{GetPair(0)} {GetPair(1)} {GetPair(2)} {GetPair(3)} {GetPair(4)} {GetPair(5)} {GetPair(6)}";

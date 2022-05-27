@@ -13,13 +13,27 @@
         public DateTimeOffset? LastSeen { get; set; }
         public string LiveStatus => GetCurrentStatus();
 
+        public static ServerInfo Generate(int id, DateTimeOffset ts)
+        {
+            return new ServerInfo()
+            {
+                DeviceType = 404,
+                LastSeen = ts,
+                IP = id.ToString(),
+                LastStatus = "active",
+                Name = "",
+                Number = id,
+                Symbol = ""
+            };
+        }
+
         private string GetCurrentStatus()
         {
             return LastStatus switch
             {
-              //  "online" => "online",
-               // "delayed" => "delayed",
-               // "offline" => "offline",
+                //  "online" => "online",
+                // "delayed" => "delayed",
+                // "offline" => "offline",
                 "untracked" => "untracked",
                 _ => GetStatusFromTime(DateTimeOffset.UtcNow)
             };
