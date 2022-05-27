@@ -47,9 +47,8 @@
                 logger.LogInformation("ElementStatus data point received. {id} {timestamp}", id, timestamp);
                 var ts = DateTimeOffset.FromUnixTimeSeconds(timestamp);
 
-                if (squares.ContainsKey(id))
+                if (squares.TryGetValue(id, out var sq))
                 {
-                    var sq = squares[id];
                     logger.LogInformation("Square {square} found", sq.Name);
                     sq.SetLastSeen(ts);
                 }
@@ -94,13 +93,19 @@
     {
         foreach (var s in await GetServers())
         {
-            if (!squares.ContainsKey(s.Number) || squares[s.Number] == null)
-            {
-                var e = elements.FirstOrDefault(e => e.Number == s.Number);
-                squares[s.Number] = new Square(e,s);
-            }
+            await SetupServer(s);
         }
         logger.LogInformation("Squares constructed.");
+    }
+
+
+    protected async Task SetupServer(ServerInfo s)
+    {
+        if (!squares.ContainsKey(s.Number) || squares[s.Number] == null)
+        {
+            var e = elements.FirstOrDefault(e => e.Number == s.Number);
+            squares[s.Number] = new Square(e, s);
+        }
     }
 
     private void SquareUpdated() => StateHasChanged();
@@ -163,118 +168,118 @@
             Symbol = "H",
             LastSeen = DateTimeOffset.UtcNow.AddSeconds(-3)
         };
-        var he = new ServerInfo()
-        {
-            Number = 2,
-            Name = "Helium",
-            LastStatus = "untracked",
-            DeviceType = 1,
-            IP = ".2",
-            Symbol = "He",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-3)
-        };
-        var li = new ServerInfo()
-        {
-            Number = 3,
-            Name = "Lithium",
-            LastStatus = "offline",
-            DeviceType = 2,
-            IP = ".3",
-            Symbol = "Li",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
-        };
-        var k = new ServerInfo()
-        {
-            Number = 19,
-            Name = "Potassium",
-            LastStatus = "delayed",
-            DeviceType = 3,
-            IP = ".19",
-            Symbol = "K",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-45)
-        };
-        var ni = new ServerInfo()
-        {
-            Number = 28,
-            Name = "Nickel",
-            LastStatus = "untracked",
-            DeviceType = 6,
-            IP = ".28",
-            Symbol = "Ni",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
-        };
-        var cu = new ServerInfo()
-        {
-            Number = 29,
-            Name = "Copper",
-            LastStatus = "offline",
-            DeviceType = 7,
-            IP = ".29",
-            Symbol = "Cu",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
-        };
-        var pd = new ServerInfo()
-        {
-            Number = 46,
-            Name = "Palladium",
-            LastStatus = "untracked",
-            DeviceType = 7,
-            IP = ".54",
-            Symbol = "Pd",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
-        };
-        var ag = new ServerInfo()
-        {
-            Number = 47,
-            Name = "Silver",
-            LastStatus = "untracked",
-            DeviceType = 7,
-            IP = ".47",
-            Symbol = "Ag",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
-        };
-        var io = new ServerInfo()
-        {
-            Number = 53,
-            Name = "Iodine",
-            LastStatus = "untracked",
-            DeviceType = 4,
-            IP = ".53",
-            Symbol = "I",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
-        };
-        var xe = new ServerInfo()
-        {
-            Number = 54,
-            Name = "Xenon",
-            LastStatus = "untracked",
-            DeviceType = 9,
-            IP = ".54",
-            Symbol = "Xe",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
-        };
-        var ho = new ServerInfo()
-        {
-            Number = 65,
-            Name = "Holmium",
-            LastStatus = "untracked",
-            DeviceType = 8,
-            IP = ".54",
-            Symbol = "Ho",
-            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
-        };
+        //var he = new ServerInfo()
+        //{
+        //    Number = 2,
+        //    Name = "Helium",
+        //    LastStatus = "untracked",
+        //    DeviceType = 1,
+        //    IP = ".2",
+        //    Symbol = "He",
+        //    LastSeen = DateTimeOffset.UtcNow.AddSeconds(-3)
+        //};
+        //var li = new ServerInfo()
+        //{
+        //    Number = 3,
+        //    Name = "Lithium",
+        //    LastStatus = "offline",
+        //    DeviceType = 2,
+        //    IP = ".3",
+        //    Symbol = "Li",
+        //    LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
+        //};
+        //var k = new ServerInfo()
+        //{
+        //    Number = 19,
+        //    Name = "Potassium",
+        //    LastStatus = "delayed",
+        //    DeviceType = 3,
+        //    IP = ".19",
+        //    Symbol = "K",
+        //    LastSeen = DateTimeOffset.UtcNow.AddSeconds(-45)
+        //};
+        //var ni = new ServerInfo()
+        //{
+        //    Number = 28,
+        //    Name = "Nickel",
+        //    LastStatus = "untracked",
+        //    DeviceType = 6,
+        //    IP = ".28",
+        //    Symbol = "Ni",
+        //    LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
+        //};
+        //var cu = new ServerInfo()
+        //{
+        //    Number = 29,
+        //    Name = "Copper",
+        //    LastStatus = "offline",
+        //    DeviceType = 7,
+        //    IP = ".29",
+        //    Symbol = "Cu",
+        //    LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
+        //};
+        //var pd = new ServerInfo()
+        //{
+        //    Number = 46,
+        //    Name = "Palladium",
+        //    LastStatus = "untracked",
+        //    DeviceType = 7,
+        //    IP = ".54",
+        //    Symbol = "Pd",
+        //    LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
+        //};
+        //var ag = new ServerInfo()
+        //{
+        //    Number = 47,
+        //    Name = "Silver",
+        //    LastStatus = "untracked",
+        //    DeviceType = 7,
+        //    IP = ".47",
+        //    Symbol = "Ag",
+        //    LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
+        //};
+        //var io = new ServerInfo()
+        //{
+        //    Number = 53,
+        //    Name = "Iodine",
+        //    LastStatus = "untracked",
+        //    DeviceType = 4,
+        //    IP = ".53",
+        //    Symbol = "I",
+        //    LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
+        //};
+        //var xe = new ServerInfo()
+        //{
+        //    Number = 54,
+        //    Name = "Xenon",
+        //    LastStatus = "untracked",
+        //    DeviceType = 9,
+        //    IP = ".54",
+        //    Symbol = "Xe",
+        //    LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
+        //};
+        //var ho = new ServerInfo()
+        //{
+        //    Number = 65,
+        //    Name = "Holmium",
+        //    LastStatus = "untracked",
+        //    DeviceType = 8,
+        //    IP = ".54",
+        //    Symbol = "Ho",
+        //    LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
+        //};
 
         var result = new List<ServerInfo>();
         result.Add(h);
-        result.Add(he);
-        result.Add(li);
-        result.Add(k);
-        result.Add(ni);
-        result.Add(cu);
-        result.Add(pd);
-        result.Add(ag);
-        result.Add(io);
-        result.Add(xe);
+        //result.Add(he);
+        //result.Add(li);
+        //result.Add(k);
+        //result.Add(ni);
+        //result.Add(cu);
+        //result.Add(pd);
+        //result.Add(ag);
+        //result.Add(io);
+        //result.Add(xe);
        // result.Add(ho);
         return result;
     }
