@@ -1,0 +1,30 @@
+﻿<div class="social">
+    <a href="https://open.spotify.com/user/alexsalisbury"><img src="./images/Spotify_Icon_RGB_Green.png"></a>
+    <a href="https://twitter.com/alexsalisbury"><img src="./images/Twitter_Social_Icon_Rounded_Square_Color.png"></a>
+    <a href="https://instagram.com/alexsalisbury/"><img src="./images/insta.png"></a>
+    <a href="https://github.com/alexsalisbury"><img src="./images/GitHub-Mark-Light-32px.png"></a>
+</div>
+
+@*<div class="navbar navbar-dark">
+    <div class="@NavMenuCssClass">
+        <ul class="navlist">
+            <li><a href="#"><img src="http://unsplash.it/38" aria-hidden="true" alt="Element" /></a></li>
+            <li><a href="#"><img src="http://unsplash.it/39" aria-hidden="true" alt="State" /></a></li>
+            <li><a href="#"><img src="http://unsplash.it/40" aria-hidden="true" alt="Resume" /></a></li>
+            <li><a href="#"><img src="http://unsplash.it/41" aria-hidden="true" alt="Rpg" /></a></li>
+            <li><a href="#"><img src="http://unsplash.it/42" aria-hidden="true" alt="Uses" /></a></li>
+        </ul>
+        <img src="http://unsplash.it/100" @onclick="ToggleNavMenu" />
+    </div>
+</div>*@
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
