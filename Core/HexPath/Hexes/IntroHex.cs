@@ -7,11 +7,11 @@
         {
             this.Location = location;
             this.Style = IntroHex.DefaultStyle;
-            this.Unlocks = new[] {((uint)3, HexOrder.About) };
+            this.Unlocks = new[] {((uint)3, HexOrder.About), ((uint)4, HexOrder.Status) };
         }
 
         public static HexStyle DefaultStyle => new HexStyle()
-                { HexClass = "hexroot", Shade = HexItem.GetDefaultShade((uint)HexOrder.Intro), Target = HexItem.GetDefaultTarget((uint)HexOrder.Intro), IsGhost = false };
+                { HexClass = "hexroot", Shade = HexItem.GetDefaultShade((uint)HexOrder.Intro), Image = HexItem.GetDefaultTarget((uint)HexOrder.Intro), IsGhost = false };
 
 
         public static (uint, uint) DefaultLocation => (2,5);

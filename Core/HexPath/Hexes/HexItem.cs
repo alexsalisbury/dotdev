@@ -56,10 +56,11 @@
             {
                 var next = this.Location.Move(pair.Item1, pair.Item2);
 
-                var item = pair.Item2 switch 
+                HexItem? item = pair.Item2 switch 
                 {
                     //HexOrder.Blank => new BlankItem(),
                     HexOrder.About => new AboutHex(next, enable),
+                    HexOrder.Status => new StatusHex(next, enable),
                     _ => null
                 };
 
