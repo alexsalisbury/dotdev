@@ -42,18 +42,18 @@
                 DeviceType = 1,
                 IP = ".1",
                 Symbol = "H",
-                LastSeen = DateTimeOffset.UtcNow.AddSeconds(-3)
+                LastSeen = DateTimeOffset.UtcNow.AddSeconds(-30)
             };
-            //var he = new ServerInfo()
-            //{
-            //    Number = 2,
-            //    Name = "Helium",
-            //    LastStatus = "untracked",
-            //    DeviceType = 1,
-            //    IP = ".2",
-            //    Symbol = "He",
-            //    LastSeen = DateTimeOffset.UtcNow.AddSeconds(-34)
-            //};
+            var he = new ServerInfo()
+            {
+                Number = 2,
+                Name = "Helium",
+                LastStatus = "untracked",
+                DeviceType = 1,
+                IP = ".2",
+                Symbol = "He",
+                LastSeen = DateTimeOffset.UtcNow.AddSeconds(-30)
+            };
             //var li = new ServerInfo()
             //{
             //    Number = 3,
@@ -64,6 +64,16 @@
             //    Symbol = "Li",
             //    LastSeen = DateTimeOffset.UtcNow.AddMonths(-5)
             //};
+            var c = new ServerInfo()
+            {
+                Number = 6,
+                Name = "Carbon",
+                LastStatus = "untracked",
+                DeviceType = 1,
+                IP = ".6",
+                Symbol = "C",
+                LastSeen = DateTimeOffset.UtcNow.AddSeconds(-30)
+            };
             //var cl = new ServerInfo()
             //{
             //    Number = 17,
@@ -157,8 +167,9 @@
 
             var result = new List<ServerInfo>();
             result.Add(h);
-            //result.Add(he);
+            result.Add(he);
             //result.Add(li);
+            result.Add(c);
             //result.Add(cl);
             //result.Add(k);
             //result.Add(ni);
@@ -167,7 +178,7 @@
             //result.Add(ag);
             //result.Add(io);
             //result.Add(xe);
-            // result.Add(ho);
+            //result.Add(ho);
             return result;
         }
 
