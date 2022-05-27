@@ -12,7 +12,6 @@
     --color-lightblue: #BAD3D1;
 }
 
-
 .periodic-table {
     display: grid;
     gap: 5px;
@@ -51,7 +50,7 @@
         transform: scale(1.2);
         transition-delay: 1ms;
         outline: none;
-        border-width: 2px;
+        border-width: 5px;
     }
 
 
@@ -74,11 +73,11 @@
 
 ::deep .element .symbol {
     font-size: 2.0vw;
-    font-family:'Times New Roman', Times, serif;
+    font-family:'Public Sans', sans-serif;
 }
 
 ::deep .element .name {
-    font-size: 0.6vw;
+    font-size: 0.8vw;
 }
 
 ::deep .element .status {
@@ -89,8 +88,6 @@
     ::deep .element:hover .status {
         visibility: visible;
     }
-
-
 
 ::deep .alkali-metal {
     border-color: #F69A9A;
@@ -237,7 +234,7 @@
 
 ::deep .online .symbol {
     color: #4AB15D;
-    text-shadow: 0 0 0.3vw #4AB15D;
+    text-shadow: 0 0 0.4vw #4AB15D;
 }
 
 ::deep .online:hover {
@@ -305,4 +302,24 @@
 
 ::deep .unknown .symbol {
     color: #444444;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pulse {
+    -webkit-animation-name: pulse;
+    animation-name: pulse;
+    animation-iteration-count: 1
 }
