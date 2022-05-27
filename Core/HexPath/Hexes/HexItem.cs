@@ -36,7 +36,7 @@
             return (Location?.Row ?? 0, Location?.Column ?? 0);
         }
 
-        protected internal static string GetDefaultTarget(uint idx) => $"./hex_placeholder_{idx}.png";
+        protected internal static string GetDefaultImage(uint idx) => $"./images/hex_placeholder_{idx}.png";
 
         protected internal static string GetDefaultShade(uint idx)
         {

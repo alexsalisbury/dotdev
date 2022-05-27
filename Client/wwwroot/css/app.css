@@ -79,4 +79,21 @@ a, .btn-link {
     filter: blur(1px);
     position: absolute;
     bottom: 30px;
+    right: 50px;
+    perspective: -30px;
 }
+
+.social {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: absolute;
+    bottom: 30px;
+    perspective: 30px;
+}
+
+    .social img {
+        margin: 5px;
+        height: 32px;
+        width: 32px;
+    }

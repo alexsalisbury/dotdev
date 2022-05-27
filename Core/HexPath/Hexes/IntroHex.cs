@@ -11,7 +11,7 @@
         }
 
         public static HexStyle DefaultStyle => new HexStyle()
-                { HexClass = "hexroot", Shade = HexItem.GetDefaultShade((uint)HexOrder.Intro), Image = HexItem.GetDefaultTarget((uint)HexOrder.Intro), IsGhost = false };
+                { HexClass = "hexroot", Shade = HexItem.GetDefaultShade((uint)HexOrder.Intro), Image = HexItem.GetDefaultImage((uint)HexOrder.Intro), IsGhost = false };
 
 
         public static (uint, uint) DefaultLocation => (2,5);

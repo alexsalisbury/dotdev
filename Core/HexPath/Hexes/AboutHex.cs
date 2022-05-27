@@ -9,7 +9,7 @@ public record AboutHex : HexItem
     }
 
     public static HexStyle DefaultStyle => new HexStyle()
-        { HexClass = "hexabout", Shade = HexItem.GetDefaultShade((uint)HexOrder.About), Image = HexItem.GetDefaultTarget((uint)HexOrder.About) };
+        { HexClass = "hexabout", Shade = HexItem.GetDefaultShade((uint)HexOrder.About), Image = HexItem.GetDefaultImage((uint)HexOrder.About) };
 
 
     public static (uint, uint) DefaultLocation => (3, 4);
