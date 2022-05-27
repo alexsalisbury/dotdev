@@ -1,4 +1,28 @@
 ﻿@page "/"
+@using Dotdev.Client.Shared;
 @using Dotdev.Client.Shared.HexPath;
+@using Dotdev.Core.HexPath;
+@inject IJSRuntime jsRuntime
+@inject IHoneycomb Grid
 
-<HexPath />
+<HexPath Grid="Grid" />
+<ConsoleFooter Lines="lines" />
+
+@code{
+    // Push to Func?
+    string[] lines = new[] {"Welcome...initializing...", "1/3 modules loaded", "[This space intentionally left minimalist]" };
+   // Task t;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _ = Go();
+    }
+
+    private async Task Go()
+    {
+        await Task.Delay(2000);
+        var l = Grid.UnlockAsync();
+        await jsRuntime.InvokeVoidAsync("consolePrint", lines.ToArray());
+        await l;
+    }
+}

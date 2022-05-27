@@ -1,7 +1,10 @@
 ﻿html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color:#001122;
-
+    background-color: #001122;
+    color: #fff;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 h1:focus {
@@ -62,3 +65,18 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.page {
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+#consoleTarget {
+    font-size: 24px;
+    font-family: 'Cutive Mono';
+    color: #ffffff;
+    filter: blur(1px);
+    position: absolute;
+    bottom: 30px;
+}
