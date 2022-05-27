@@ -1,5 +1,4 @@
 ﻿@using Dotdev.Core.HexPath
-@inject IHoneycomb Grid
 
 <div class="hexPath">
 	@foreach (var hex in @Grid.GetItems())
@@ -9,9 +8,17 @@
 </div>
 
 @code {
+    [Parameter]
+    public IHoneycomb Grid { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         Grid.HoneycombChanged += ((s,e) => { base.StateHasChanged(); });
         Grid.AddRoot(new HexLocation(HexOrder.Intro, IntroHex.DefaultLocation));
+    }
+
+    public async Task StepUnlockAsync()
+    {
+        await Grid.UnlockAsync();
     }
 }

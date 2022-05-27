@@ -7,15 +7,22 @@
 
 ::deep .hexroot {
     position: fixed;
-    top: 100px;
-    left: 100px;
+    top: 198px;
+    left: 150px;
     width: 100px;
 }
 
 ::deep .hexabout {
     position: fixed;
-    top: 180px;
-    left: 150px;
+    top: 283px;
+    left: 200px;
+    width: 100px;
+}
+
+::deep .hexstatus {
+    position: fixed;
+    top: 283px;
+    left: 100px;
     width: 100px;
 }
 

@@ -1,10 +1,11 @@
 ﻿@using Dotdev.Core.HexPath
 @inherits OwningComponentBase
+@inject NavigationManager nav
 
-<div class="@HexClass" style="@Style.MaxSizes" @onclick="OnClick">
+<div class="@HexClass" style="@Style.MaxSizes" @onclick="OnClick" @onmouseover="OnHover">
     <svg class="@SvgClass" viewBox=@Style.ViewBox>
         <pattern id=@ImgPattern x="0" y="0" width="1" height="1" viewBox=@Style.ViewBox preserveAspectRatio="xMidYMid slice">
-            <image width="100%" height="100%" href=@Target/>
+            <image width="100%" height="100%" href=@Image/>
         </pattern>
         <polygon fill=@HexFill style=@PolygonStyle points=@Style.Points/>
    </svg>
@@ -18,14 +19,17 @@
 
     public bool Enabled => !Style.IsGhost;
     public bool Opened = false;
+    public bool Wired => Target != "#";
+    private string outline => Wired ? "aqua" : "red";
 
     public string HexClass => Style?.HexClass ?? "hexghost";
     public string HexFill => Opened ? ImgPatternUrl : Enabled ? (Style.Shade ?? "transparent") : "transparent";
-    public string PolygonStyle => Opened ? "stroke:black;stroke-width:1px;stroke-linecap:butt;" : "stroke:grey;stroke-width:1px;stroke-dasharray=\"5,5\"";
+    public string PolygonStyle => Opened ? $"stroke: {outline};stroke-width:1px;stroke-linecap:butt;" : "stroke:grey;stroke-width:1px;stroke-dasharray=\"5,5\"";
     public string ImgPattern => $"imgpattern{Index}";
     public string ImgPatternUrl => $"url(#imgpattern{Index})";
     public string Index => $"{Hx?.Index ?? 0}";
     public string SvgClass => Hx is null ? "hex-svg-ghost" : $"hex-svg-hx{(uint)(Hx?.Index ?? 0)}";
+    public string Image => Style?.Image ?? "#";
     public string Target => Style?.Target ?? "#";
 
     private IHoneycomb Grid;
@@ -42,6 +46,22 @@
         {
             if (!Opened)
             {
+                OnHover();
+            }
+
+            if (Target != "#")
+            {
+                nav.NavigateTo(Target);
+            }
+        }
+    }
+
+    private void OnHover()
+    {
+        if (Enabled)
+        {
+            if (!Opened)
+            {
                 this.Opened = true;
                 Grid.EnableGhosts(Hx);
 
@@ -49,6 +69,5 @@
                 base.StateHasChanged();
             }
         }
-
     }
 }
