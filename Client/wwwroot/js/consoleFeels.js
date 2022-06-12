@@ -1,6 +1,13 @@
-﻿function consoleQuickPrint(...lines) {
+﻿// Lookit me just blantantly dropping all this on window. Shame. 🔔
+let feelsTimer = undefined;   
+
+function stopFeels() {
+    clearInterval(feelsTimer);
+}
+
+function consoleQuickPrint(...lines) {
+    clearInterval(feelsTimer);
     let t = document.getElementById("consoleTarget");
-    let timer = undefined;   
     let expiry = 1000;
     let line = 0;
     let idx = 0;
@@ -19,21 +26,21 @@
                 idx = 0;
                 line += 1;
             } else {
-                clearInterval(timer);
+                clearInterval(feelsTimer);
             }
         }
     }
 
-    timer = setInterval(stepAppend, 80);
+    feelsTimer = setInterval(stepAppend, 80);
 }
 
 function consoleBlink(expiry = 1000) {
+    clearInterval(feelsTimer);
     let existing = t.innerHTML;
-    let timer = undefined;
 
     function blink() {
         if (expiry === 0) {
-            clearInterval(timer);
+            clearInterval(feelsTimer);
         }
         if (expiry > 0) {
             var under = (expiry % 2 === 1) ? '_' : ''
@@ -43,12 +50,12 @@ function consoleBlink(expiry = 1000) {
         }
     }
 
-    timer = setInterval(blink, 80);
+    feelsTimer = setInterval(blink, 80);
 }
 
 function consolePrint(...lines) {
     let t = document.getElementById("consoleTarget");
-    let timer = undefined;
+    clearInterval(feelsTimer);
     let expiry = 1000;
     let line = 0;
     let idx = 0;
@@ -67,15 +74,15 @@ function consolePrint(...lines) {
                 idx = 0;
                 line += 1;
             } else {
-                clearInterval(timer);
-                timer = setInterval(blink, 1000);
+                clearInterval(feelsTimer);
+                feelsTimer = setInterval(blink, 1000);
             }
         }
     }
 
     function blink() {
         if (expiry === 0) {
-            clearInterval(timer);
+            clearInterval(feelsTimer);
         }
         if (expiry > 0) {
             var under = (expiry % 2 === 0) ? '_' : ''
@@ -89,5 +96,5 @@ function consolePrint(...lines) {
         expiry == 0;
     }
 
-    timer = setInterval(stepAppend, 80);
+    feelsTimer = setInterval(stepAppend, 80);
 }

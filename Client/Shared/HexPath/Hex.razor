@@ -1,6 +1,7 @@
 ﻿@using Dotdev.Core.HexPath
 @inherits OwningComponentBase
 @inject NavigationManager nav
+@inject IJSRuntime jsRuntime
 
 <div class="@HexClass" style="@Style.MaxSizes" @onclick="OnClick" @onmouseover="OnHover">
     <svg class="@SvgClass" viewBox=@Style.ViewBox>
@@ -40,7 +41,7 @@
         Grid.AddGhosts(Hx);
     }
 
-    private void OnClick()
+    private async Task OnClick()
     {
         if (Enabled)
         {
@@ -51,7 +52,13 @@
 
             if (Target != "#")
             {
+                await jsRuntime.InvokeVoidAsync("stopFeels");
                 nav.NavigateTo(Target);
+            }
+            else
+            {
+                var lines = new[] {Hx.Index.ToString(), ">" };
+                await jsRuntime.InvokeVoidAsync("consolePrint", lines.ToArray());
             }
         }
     }
