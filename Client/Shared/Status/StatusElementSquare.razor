@@ -25,10 +25,11 @@
     private async void SquareUpdated(object sender, EventArgs e)
     {
         pulse = "pulse";
-        this.StateHasChanged();
         await SquareUpdate.InvokeAsync();
+        this.StateHasChanged();
         await Task.Delay(1000);
         pulse = string.Empty;
+        this.StateHasChanged();
     }
 
     public async ValueTask DisposeAsync()

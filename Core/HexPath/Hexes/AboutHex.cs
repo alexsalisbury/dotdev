@@ -2,8 +2,6 @@
 
 public record AboutHex : HexItem
 {
-    private List<HexItem> result;
-
     public AboutHex(HexLocation location, bool enable) : base(location, AboutHex.DefaultStyle with {IsGhost = !enable } )
     {
     }
