@@ -94,46 +94,46 @@
             //    Symbol = "K",
             //    LastSeen = DateTimeOffset.UtcNow.AddSeconds(-625)
             //};
-            //var ni = new ServerInfo()
-            //{
-            //    Number = 28,
-            //    Name = "Nickel",
-            //    LastStatus = "untracked",
-            //    DeviceType = 6,
-            //    IP = ".28",
-            //    Symbol = "Ni",
-            //    LastSeen = DateTimeOffset.UtcNow.AddSeconds(-134)
-            //};
-            //var cu = new ServerInfo()
-            //{
-            //    Number = 29,
-            //    Name = "Copper",
-            //    LastStatus = "offline",
-            //    DeviceType = 7,
-            //    IP = ".29",
-            //    Symbol = "Cu",
-            //    LastSeen = DateTimeOffset.UtcNow.AddSeconds(-324)
-            //};
-            //var pd = new ServerInfo()
-            //{
-            //    Number = 46,
-            //    Name = "Palladium",
-            //    LastStatus = "untracked",
-            //    DeviceType = 7,
-            //    IP = ".54",
-            //    Symbol = "Pd",
-            //    LastSeen = DateTimeOffset.UtcNow.AddMinutes(-53)
-            //};
-            //var ag = new ServerInfo()
-            //{
-            //    Number = 47,
-            //    Name = "Silver",
-            //    LastStatus = "untracked",
-            //    DeviceType = 7,
-            //    IP = ".47",
-            //    Symbol = "Ag",
-            //    LastSeen = DateTimeOffset.UtcNow.AddMinutes(-19)
-            //};
+            var ni = new ServerInfo()
+            {
+                Number = 28,
+                Name = "Nickel",
+                LastStatus = "untracked",
+                DeviceType = 6,
+                IP = ".28",
+                Symbol = "Ni",
+                LastSeen = DateTimeOffset.UtcNow.AddSeconds(-134)
+            };
+            var cu = new ServerInfo()
+            {
+                Number = 29,
+                Name = "Copper",
+                LastStatus = "offline",
+                DeviceType = 7,
+                IP = ".29",
+                Symbol = "Cu",
+                LastSeen = DateTimeOffset.UtcNow.AddSeconds(-324)
+            };
+            var pd = new ServerInfo()
+            {
+                Number = 46,
+                Name = "Palladium",
+                LastStatus = "untracked",
+                DeviceType = 7,
+                IP = ".54",
+                Symbol = "Pd",
+                LastSeen = DateTimeOffset.UtcNow.AddMinutes(-53)
+            };
+            var ag = new ServerInfo()
+            {
+                Number = 47,
+                Name = "Silver",
+                LastStatus = "untracked",
+                DeviceType = 7,
+                IP = ".47",
+                Symbol = "Ag",
+                LastSeen = DateTimeOffset.UtcNow.AddMinutes(-19)
+            };
             //var io = new ServerInfo()
             //{
             //    Number = 53,
@@ -144,16 +144,16 @@
             //    Symbol = "I",
             //    LastSeen = DateTimeOffset.UtcNow.AddMinutes(-438)
             //};
-            //var xe = new ServerInfo()
-            //{
-            //    Number = 54,
-            //    Name = "Xenon",
-            //    LastStatus = "untracked",
-            //    DeviceType = 9,
-            //    IP = ".54",
-            //    Symbol = "Xe",
-            //    LastSeen = DateTimeOffset.UtcNow.AddSeconds(-5)
-            //};
+            var xe = new ServerInfo()
+            {
+                Number = 54,
+                Name = "Xenon",
+                LastStatus = "untracked",
+                DeviceType = 9,
+                IP = ".54",
+                Symbol = "Xe",
+                LastSeen = DateTimeOffset.UtcNow.AddSeconds(-5)
+            };
             //var ho = new ServerInfo()
             //{
             //    Number = 65,
@@ -172,12 +172,12 @@
             result.Add(c);
             //result.Add(cl);
             //result.Add(k);
-            //result.Add(ni);
-            //result.Add(cu);
-            //result.Add(pd);
-            //result.Add(ag);
+            result.Add(ni);
+            result.Add(cu);
+            result.Add(pd);
+            result.Add(ag);
             //result.Add(io);
-            //result.Add(xe);
+            result.Add(xe);
             //result.Add(ho);
             return result;
         }
