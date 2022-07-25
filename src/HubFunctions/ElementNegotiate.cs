@@ -1,4 +1,4 @@
-namespace Dotdev.Api;
+namespace HubFunctions;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs;
@@ -10,7 +10,7 @@ public static class HubNegotiateFunction
     [FunctionName("negotiate")]
     public static SignalRConnectionInfo Run(
         [HttpTrigger(AuthorizationLevel.Anonymous)] HttpRequest req,
-        [SignalRConnectionInfo(HubName = "SignalRServiceHomeDotCloud")] SignalRConnectionInfo connectionInfo)
+        [SignalRConnectionInfo(HubName = "dotdev")] SignalRConnectionInfo connectionInfo)
     {
         return connectionInfo;
     }
