@@ -8,7 +8,7 @@
         public string Symbol { get; set; }
         public string LastStatus { get; set; }
         public string Name { get; set; }
-        public string IP { get; set; }
+        public string IP => Number.ToString();
         public uint DeviceType { get; set; }
         public DateTimeOffset? LastSeen { get; set; }
         public string LiveStatus => GetCurrentStatus(LastStatus, LastSeen);
@@ -19,7 +19,6 @@
             {
                 DeviceType = 404,
                 LastSeen = ts,
-                IP = id.ToString(),
                 LastStatus = "active",
                 Name = "",
                 Number = id,
