@@ -13,7 +13,7 @@
         public DateTimeOffset? LastSeen { get; set; }
         public string LiveStatus => GetCurrentStatus(LastStatus, LastSeen);
 
-        public static ServerInfo Generate(int id, DateTimeOffset ts)
+        public static ServerInfo Generate(int id, DateTimeOffset? ts)
         {
             return new ServerInfo()
             {
@@ -28,6 +28,11 @@
 
         private static string GetCurrentStatus(string lastStatus, DateTimeOffset? lastSeen)
         {
+            if (lastSeen == null)
+            {
+                return "untracked";
+            }
+
             return lastStatus switch
             {
                 "untracked" => "untracked",

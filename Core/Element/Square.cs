@@ -24,7 +24,7 @@
             this.OnChange?.Invoke(this, new EventArgs());
         }
 
-        public void SetLastSeen(DateTimeOffset timestamp)
+        public void SetLastSeen(DateTimeOffset? timestamp)
         {
             this.Status = this.Status switch
             {
