@@ -11,7 +11,7 @@
         public string IP { get; set; }
         public uint DeviceType { get; set; }
         public DateTimeOffset? LastSeen { get; set; }
-        public string LiveStatus => GetCurrentStatus();
+        public string LiveStatus => GetCurrentStatus(LastStatus, LastSeen);
 
         public static ServerInfo Generate(int id, DateTimeOffset ts)
         {
@@ -27,21 +27,18 @@
             };
         }
 
-        private string GetCurrentStatus()
+        private static string GetCurrentStatus(string lastStatus, DateTimeOffset? lastSeen)
         {
-            return LastStatus switch
+            return lastStatus switch
             {
-                //  "online" => "online",
-                // "delayed" => "delayed",
-                // "offline" => "offline",
                 "untracked" => "untracked",
-                _ => GetStatusFromTime(DateTimeOffset.UtcNow)
+                _ => GetStatusFromTime(DateTimeOffset.UtcNow, lastSeen)
             };
         }
 
-        private string GetStatusFromTime(DateTimeOffset ts)
+        private static string GetStatusFromTime(DateTimeOffset checkTime, DateTimeOffset? lastSeen)
         {
-            var delta = ts - LastSeen;
+            var delta = checkTime - lastSeen;
             return delta?.TotalMinutes switch
             {
                 null => "unknown",

@@ -13,22 +13,29 @@
     using Microsoft.Extensions.Logging;
     using Dapper;
     using Dotdev.Core.Element;
+    using Microsoft.Extensions.Configuration;
 
     public static class ServerFetchFunction
     {
         [FunctionName("ServerFetch")]
         public async static Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
-            ILogger log)
+            ILogger log, 
+            ExecutionContext context)
         {
             log.LogInformation("ServerFetch!");
-            var connStr = Environment.GetEnvironmentVariable("dotdev_cs");
-            //var query = "select * from view_Servers";
 
-            //var fetched = await FetchAsync<ServerInfo>(connStr, query, log);
-            //log.LogInformation("Returned from DB for ServerFetch {retrieved}", fetched?.Count());
-            //var result = fetched ?? GetExampleServers() ?? new List<ServerInfo>();
-            var result = GetExampleServers() ?? new List<ServerInfo>();
+            var config = new ConfigurationBuilder()
+                .SetBasePath(context.FunctionAppDirectory)
+                .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables()
+                .Build();
+            var connStr = config.GetConnectionString("dotdev");
+
+            var fetched = await FetchAsync<ServerInfo>(connStr, log);
+            log.LogInformation("Returned from DB for ServerFetch {retrieved}", fetched?.Count());
+            var result = fetched ?? GetExampleServers() ?? new List<ServerInfo>();
+            //var result = GetExampleServers() ?? new List<ServerInfo>();
             return new OkObjectResult(result);
         }
 
@@ -182,14 +189,16 @@
             return result;
         }
 
-        private static async Task<IEnumerable<T>> FetchAsync<T>(string connStr, string query, ILogger log)
+        private static async Task<IEnumerable<T>> FetchAsync<T>(string connStr, ILogger log)
         {
+            var query = "select * from view_Server";
+
             try
             {
                 using (var conn = new SqlConnection(connStr))
                 {
                     conn.Open();
-                    log.LogInformation("connected to DB for ElementFetch!");
+                    log.LogInformation("connected to DB for ServerFetch!");
                     return await conn.QueryAsync<T>(query, commandType: CommandType.Text);
                 }
             }
