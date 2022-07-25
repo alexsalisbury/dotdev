@@ -48,7 +48,6 @@
                 Name = "Hydrogen",
                 LastStatus = "online",
                 DeviceType = 1,
-                IP = ".1",
                 Symbol = "H",
                 LastSeen = DateTimeOffset.UtcNow.AddSeconds(-30)
             };
@@ -58,7 +57,6 @@
                 Name = "Helium",
                 LastStatus = "untracked",
                 DeviceType = 1,
-                IP = ".2",
                 Symbol = "He",
                 LastSeen = DateTimeOffset.UtcNow.AddSeconds(-30)
             };
@@ -78,7 +76,6 @@
                 Name = "Carbon",
                 LastStatus = "untracked",
                 DeviceType = 1,
-                IP = ".6",
                 Symbol = "C",
                 LastSeen = DateTimeOffset.UtcNow.AddSeconds(-30)
             };
@@ -108,7 +105,6 @@
                 Name = "Nickel",
                 LastStatus = "untracked",
                 DeviceType = 6,
-                IP = ".28",
                 Symbol = "Ni",
                 LastSeen = DateTimeOffset.UtcNow.AddSeconds(-134)
             };
@@ -118,7 +114,6 @@
                 Name = "Copper",
                 LastStatus = "offline",
                 DeviceType = 7,
-                IP = ".29",
                 Symbol = "Cu",
                 LastSeen = DateTimeOffset.UtcNow.AddSeconds(-324)
             };
@@ -128,7 +123,6 @@
                 Name = "Palladium",
                 LastStatus = "untracked",
                 DeviceType = 7,
-                IP = ".54",
                 Symbol = "Pd",
                 LastSeen = DateTimeOffset.UtcNow.AddMinutes(-53)
             };
@@ -138,7 +132,6 @@
                 Name = "Silver",
                 LastStatus = "untracked",
                 DeviceType = 7,
-                IP = ".47",
                 Symbol = "Ag",
                 LastSeen = DateTimeOffset.UtcNow.AddMinutes(-19)
             };
@@ -158,7 +151,6 @@
                 Name = "Xenon",
                 LastStatus = "untracked",
                 DeviceType = 9,
-                IP = ".54",
                 Symbol = "Xe",
                 LastSeen = DateTimeOffset.UtcNow.AddSeconds(-5)
             };
