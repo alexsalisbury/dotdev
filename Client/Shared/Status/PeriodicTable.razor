@@ -18,6 +18,8 @@
     private IEnumerable<ElementInfo> elements = Array.Empty<ElementInfo>();
     private Dictionary<int, Square> squares = new();
 
+    private void SquareUpdated() => StateHasChanged();
+
     protected override async Task OnInitializedAsync()
     {
         var servers = GetExampleServers();
@@ -61,13 +63,6 @@
                 StateHasChanged();
             });
 
-            //hubConnection.On<int, long>("elementstatus", (id, timestamp) =>
-            //{
-            //    logger.LogInformation("ElementStatus data point received. {id} {timestamp}", id, timestamp );
-            //    squares[id].SetLastSeen(DateTimeOffset.FromUnixTimeSeconds(timestamp));
-            //    StateHasChanged();
-            //});
-
             await elementStatus.StartAsync();
         }
     }
@@ -95,9 +90,8 @@
         {
             await SetupServer(s);
         }
-        logger.LogInformation("Squares constructed.");
+        logger.LogInformation("Servers connected.");
     }
-
 
     protected async Task SetupServer(ServerInfo s)
     {
@@ -107,22 +101,6 @@
             squares[s.Number] = new Square(e, s);
         }
     }
-
-    private void SquareUpdated() => StateHasChanged();
-
-    //protected override async Task OldInitializedAsync()
-    //{
-    //    var servers = await GetServers();
-
-    //    foreach (var e in await GetElements())
-    //    {
-    //        if (!squares.ContainsKey(e.Number) || squares[e.Number] == null)
-    //        {
-    //            var server = servers.FirstOrDefault(s => s.Number == e.Number);
-    //            squares[e.Number] = new Square() { Info = e,  Status = server };
-    //        }
-    //    }
-    //}
 
     protected async Task<IEnumerable<ElementInfo>> GetElements()
     {
@@ -154,7 +132,6 @@
             return GetExampleServers();
         }
     }
-
 
     protected IEnumerable<ServerInfo> GetExampleServers()
     {
@@ -188,6 +165,16 @@
         //    Symbol = "Li",
         //    LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
         //};
+        var c = new ServerInfo()
+        {
+            Number = 6,
+            Name = "Carbon",
+            LastStatus = "untracked",
+            DeviceType = 6,
+            IP = ".6",
+            Symbol = "C",
+            LastSeen = DateTimeOffset.UtcNow.AddSeconds(-360000)
+        };
         //var k = new ServerInfo()
         //{
         //    Number = 19,
@@ -273,6 +260,7 @@
         //result.Add(h);
         result.Add(he);
         //result.Add(li);
+        result.Add(c);
         //result.Add(k);
         result.Add(ni);
        result.Add(cu);

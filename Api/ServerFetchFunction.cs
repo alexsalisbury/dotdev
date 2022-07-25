@@ -25,18 +25,19 @@
         {
             log.LogInformation("ServerFetch!");
 
-            var config = new ConfigurationBuilder()
-                .SetBasePath(context.FunctionAppDirectory)
-                .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-                .AddEnvironmentVariables()
-                .Build();
-            var connStr = config.GetConnectionString("dotdev");
+            var connStr = Environment.GetEnvironmentVariable("dotdev_cs");
+            //var config = new ConfigurationBuilder()
+            //    .SetBasePath(context.FunctionAppDirectory)
+            //    .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+            //    .AddEnvironmentVariables()
+            //    .Build();
+            //var connStr = config.GetConnectionString("dotdev");
 
             var fetched = await FetchAsync<ServerInfo>(connStr, log);
             log.LogInformation("Returned from DB for ServerFetch {retrieved}", fetched?.Count());
-            var result = fetched ?? GetExampleServers() ?? new List<ServerInfo>();
+           // var result = fetched ?? GetExampleServers() ?? new List<ServerInfo>();
             //var result = GetExampleServers() ?? new List<ServerInfo>();
-            return new OkObjectResult(result);
+            return new OkObjectResult(fetched);
         }
 
         private static IEnumerable<ServerInfo> GetExampleServers()
