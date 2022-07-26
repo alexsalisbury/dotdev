@@ -21,8 +21,9 @@
     //public string Mass => Info.Mass;
     //public string WeightStr => Info.WeightStr;
     //public IEnumerable<uint> Weights => Info.Weight ?? new List<uint>();
-    public string Material => Info.Material;
+    public string Material => Info?.Material ?? string.Empty;
     public int Column => Info.GridColumn;
     public int Row => Info.GridRow;
-    public string ElementClass => $"element {Material} {StatusKey}";
+    public string ElementBasic => $"element {Material}";
+    public string ElementClass => $"{ElementBasic} {StatusKey}";
 }
