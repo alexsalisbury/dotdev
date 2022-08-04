@@ -47,7 +47,9 @@ This is the back-end of my IoT pipeline. This takes datapoints from local machin
       A[Status Intake]-->B[Azure Queue];
       C[Canary]-->B;
       B-->D[Broadcast];
-      D-->E[Azure SQL];
-      D-->F[Azure SignalR];
-      F-->G[Status];
+      B-->E[StoreStatus];
+      E-->F[Azure SQL];
+      D-->G[Azure SignalR];
+      F-->|OnAfterRender| H[Status];
+      G-->|OnNext| H[Status];
 ```
