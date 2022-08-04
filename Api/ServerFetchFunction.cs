@@ -13,7 +13,6 @@
     using Microsoft.Extensions.Logging;
     using Dapper;
     using Dotdev.Core.Element;
-    using Microsoft.Extensions.Configuration;
 
     public static class ServerFetchFunction
     {
