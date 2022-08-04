@@ -2,19 +2,26 @@
 {
     public abstract record HexItem
     {
-
         public HexLocation Location { get; init; }
         public HexStyle Style { get; init; }
         public (uint, HexOrder)[] Unlocks { get; init; }
-
         public uint GridIndex => Location?.GridIndex ?? 0;
         public bool IsGhost => Style?.IsGhost ?? false;
+        public string[]? ConsoleText { get; init; }
 
         internal static (uint, HexOrder)[] Empty { get; set; }
 
         static HexItem()
         {
             Empty = Empty ?? Array.Empty<(uint, HexOrder)>();
+        }
+
+        protected HexItem(HexLocation location, HexStyle style, string[] consoleText)
+        {
+            this.Location = location;
+            this.Style = style;
+            this.ConsoleText = consoleText;
+            this.Unlocks = Empty;
         }
 
         protected HexItem(HexLocation location, HexStyle style)
