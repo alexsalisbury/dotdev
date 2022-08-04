@@ -24,34 +24,5 @@ public static class ElementBroadcastFunction
                 Target = "elementstatus",
                 Arguments = new object[] { data.Id, data.Timestamp }
             });
-
-        await UpdateDatabase(data, log, context);
-    }
-    public static async Task UpdateDatabase(StatusDatapoint data, ILogger log, ExecutionContext context)
-    {
-        var config = new ConfigurationBuilder()
-            .SetBasePath(context.FunctionAppDirectory)
-            .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-            .AddEnvironmentVariables()
-            .Build();
-
-        var str = config.GetConnectionString("dotdev");
-        using (SqlConnection conn = new SqlConnection(str))
-        {
-            conn.Open();
-            var text = "dd_ServerUpdate";
-
-            using (SqlCommand cmd = new SqlCommand(text, conn))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@Number", SqlDbType.Int);
-                cmd.Parameters["@Number"].Value = data.Id;
-                cmd.Parameters.Add("@LastSeen", SqlDbType.DateTimeOffset);
-                cmd.Parameters["@LastSeen"].Value = DateTimeOffset.FromUnixTimeSeconds(data.Timestamp);
-
-                var rows = await cmd.ExecuteNonQueryAsync();
-               log.LogInformation($"{rows} rows were updated");
-            }
-        }
     }
 }
