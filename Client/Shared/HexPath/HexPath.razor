@@ -3,13 +3,15 @@
 <div class="hexPath">
 	@foreach (var hex in @Grid.GetItems())
 	{
-        <Hex Hx="hex.Location" Style="hex.Style" />
+        <Hex Hx="hex" />
 	}
 </div>
 
 @code {
     [Parameter]
     public IHoneycomb Grid { get; set; }
+    [Parameter]
+    public EventCallback<string> FooterUpdate { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
