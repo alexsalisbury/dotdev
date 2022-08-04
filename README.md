@@ -1,54 +1,53 @@
-# Blazor Starter Application
+# Dotdev
 
-This template contains an example .NET 6 [Blazor WebAssembly](https://docs.microsoft.com/aspnet/core/blazor/?view=aspnetcore-6.0#blazor-webassembly) client application, a .NET 6 C# [Azure Functions](https://docs.microsoft.com/azure/azure-functions/functions-overview), and a C# class library with shared code.
+This is a personal playground and portfolio site for myself. Primarily this is a learning project for Blazor, Azure SignalR and IoT as well as refreshing myself (gradually) on HTML5, CSS and the modern web. 
 
-## Getting Started
+## Current functionality
 
-1. Create a repository from the [GitHub template](https://docs.github.com/en/enterprise/2.22/user/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template) and then clone it locally to your machine.
+1. Index page built with a Honeycomb/Hex style. 
 
-1. In the **Api** folder, copy `local.settings.example.json` to `local.settings.json`
+1. Console-style footer for messages
 
-1. Continue using either Visual Studio or Visual Studio Code.
+1. Periodic table-style Status page that acts as a display for the back-end of my IoT pipeline.
 
-### Visual Studio 2022
+1. Backing Azure Functions and Azure SQL
 
-Once you clone the project, open the solution in [Visual Studio 2022](https://visualstudio.microsoft.com/vs/) and follow these steps:
+## Structure
 
-1. Right-click on the solution and select **Set Startup Projects...**.
+This webpage is a .NET 6 [Blazor WebAssembly](https://docs.microsoft.com/aspnet/core/blazor/?view=aspnetcore-6.0#blazor-webassembly) client application, two seperate .NET 6 C# [Azure Functions](https://docs.microsoft.com/azure/azure-functions/functions-overview), and a C# class library with shared code.
 
-1. Select **Multiple startup projects** and set the following actions for each project:
-    - *Api* - **Start**
-    - *ApiIsolated* - None
-    - *Client* - **Start**
-    - *Shared* - None
+Index.razor contains two main components: HexPath and ConsoleFooter. There is also a NavBar that's still in progress.
 
-1. Press **F5** to launch both the client application and the Functions API app.
+### HexPath
 
-### Visual Studio Code with Azure Static Web Apps CLI
+HexPath is a Grid of UI elements, shaped as hexagons that are meant to gradually unlock. These elements, based off the abstract HexItem class, have a locked (aka Ghost) state and an unlocked state that is interactable. The main intro hex is unlocked on load, but the remaining hexes are unlocked with a simple mouseover (but could be instead unlocked either with onclick or from other hexes as a dependency graph.) Hexes can either link to internal (or external) links or can write text to the console Footer.
 
-1. Install the [Azure Static Web Apps CLI](https://www.npmjs.com/package/@azure/static-web-apps-cli) and [Azure Functions Core Tools CLI](https://www.npmjs.com/package/azure-functions-core-tools).
+Each hex is drawn with an SVG with params that are in the HexStyle class. HexStyle controls other css/design elements as well.
 
-1. Open the folder in Visual Studio Code.
+The Grid is setup in the Honeycomb class. FOr the current version, hexes are placed statically. 
 
-1. In the VS Code terminal, run the following command to start the Static Web Apps CLI, along with the Blazor WebAssembly client application and the Functions API app:
+### ConsoleFooter
 
-    ```bash
-    swa start http://localhost:5000 --run "dotnet run --project Client/Client.csproj" --api-location Api
-    ```
+ConsoleFooter is a page footer that uses IJSRuntime to run functions in the consoleFeels.js file. This file will print out text one character per Timer tick until all lines in the string array are complete. Once that's complete, it will blink an underscore character for 1000 seconds. The timers are cancelled/reset when the lines to be printed change or when a link hex is clicked.
 
-    The Static Web Apps CLI (`swa`) first starts the Blazor WebAssembly client application and connects to it at port 5000, and then starts the Functions API app.
+### Status
 
-1. Open a browser and navigate to the Static Web Apps CLI's address at `http://localhost:4280`. You'll be able to access both the client application and the Functions API app in this single address. When you navigate to the "Fetch Data" page, you'll see the data returned by the Functions API app.
+The Status page displays the current state of hardware on my personal network. This includes desktops, laptops, network hardware, lights, IoT devices, Hololens and other smart devices. 
 
-1. Enter Ctrl-C to stop the Static Web Apps CLI.
+### API
 
-## Template Structure
+The API contains functions to grab element info and device/server state from the Azure SQL database where it's currently cached.
 
-- **Client**: The Blazor WebAssembly sample application
-- **Api**: A C# Azure Functions API, which the Blazor application will call
-- **Shared**: A C# class library with a shared data model between the Blazor and Functions application
-- **ApiIsolated**: A C# Azure Functions API using the .NET isolated execution model, which the Blazor application will call. This version can be used instead of the in-process function app in `Api`.
+### HubFunctions
 
-## Deploy to Azure Static Web Apps
+This is the back-end of my IoT pipeline. This takes datapoints from local machines on my network (and a Canary Az function) and stores the cache in a SQL database and broadcasts updates to the status page via Azure SignalR.
 
-This application can be deployed to [Azure Static Web Apps](https://docs.microsoft.com/azure/static-web-apps), to learn how, check out [our quickstart guide](https://aka.ms/blazor-swa/quickstart).
+```mermaid
+  graph LR;
+      A[Status Intake]-->B[Azure Queue];
+      C[Canary]-->B;
+      B-->D[Broadcast];
+      D-->E[Azure SQL];
+      D-->F[Azure SignalR];
+      F-->G[Status];
+```
