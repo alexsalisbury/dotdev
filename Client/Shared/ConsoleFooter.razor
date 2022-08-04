@@ -1,8 +1,19 @@
-﻿<div id="consoleTarget">
-</div>
+﻿@inject IJSRuntime jsRuntime
+
+<div id="consoleTarget" />
 
 @code {
     [Parameter]
     public string[] Lines { get; set; }
-    int pos = 0;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _ = Go();
+    }
+    
+    private async Task Go()
+    {
+        await Task.Delay(2000);
+        await jsRuntime.InvokeVoidAsync("consolePrint", Lines.ToArray());
+    }
 }

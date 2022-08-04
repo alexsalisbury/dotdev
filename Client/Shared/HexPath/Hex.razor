@@ -3,42 +3,40 @@
 @inject NavigationManager nav
 @inject IJSRuntime jsRuntime
 
-<div class="@HexClass" style="@Style.MaxSizes" @onclick="OnClick" @onmouseover="OnHover">
-    <svg class="@SvgClass" viewBox=@Style.ViewBox>
-        <pattern id=@ImgPattern x="0" y="0" width="1" height="1" viewBox=@Style.ViewBox preserveAspectRatio="xMidYMid slice">
+<div class="@HexClass" style="@Hx.Style.MaxSizes" @onclick="OnClick" @onmouseover="OnHover">
+    <svg class="@SvgClass" viewBox=@Hx.Style.ViewBox>
+        <pattern id=@ImgPattern x="0" y="0" width="1" height="1" viewBox=@Hx.Style.ViewBox preserveAspectRatio="xMidYMid slice">
             <image width="100%" height="100%" href=@Image/>
         </pattern>
-        <polygon fill=@HexFill style=@PolygonStyle points=@Style.Points/>
+        <polygon fill=@HexFill style=@PolygonStyle points=@Hx.Style.Points/>
    </svg>
 </div>
 
 @code {
     [Parameter]
-    public HexLocation Hx { get; set; }
-    [Parameter]
-    public HexStyle Style { get; set; }
+    public HexItem Hx { get; set; }
 
-    public bool Enabled => !Style.IsGhost;
+    public bool Enabled => !Hx.Style.IsGhost;
     public bool Opened = false;
     public bool Wired => Target != "#";
     private string outline => Wired ? "aqua" : "red";
 
-    public string HexClass => Style?.HexClass ?? "hexghost";
-    public string HexFill => Opened ? ImgPatternUrl : Enabled ? (Style.Shade ?? "transparent") : "transparent";
+    public string HexClass => Hx?.Style?.HexClass ?? "hexghost";
+    public string HexFill => Opened ? ImgPatternUrl : Enabled ? (Hx.Style.Shade ?? "transparent") : "transparent";
     public string PolygonStyle => Opened ? $"stroke: {outline};stroke-width:1px;stroke-linecap:butt;" : "stroke:grey;stroke-width:1px;stroke-dasharray=\"5,5\"";
     public string ImgPattern => $"imgpattern{Index}";
     public string ImgPatternUrl => $"url(#imgpattern{Index})";
-    public string Index => $"{Hx?.Index ?? 0}";
-    public string SvgClass => Hx is null ? "hex-svg-ghost" : $"hex-svg-hx{(uint)(Hx?.Index ?? 0)}";
-    public string Image => Style?.Image ?? "#";
-    public string Target => Style?.Target ?? "#";
+    public string Index => $"{Hx?.Location?.Index ?? 0}";
+    public string SvgClass => Hx is null ? "hex-svg-ghost" : $"hex-svg-hx{(uint)(Hx?.Location?.Index ?? 0)}";
+    public string Image => Hx?.Style?.Image ?? "#";
+    public string Target => Hx?.Style?.Target ?? "#";
 
     private IHoneycomb Grid;
 
     protected override async Task OnInitializedAsync()
     {
         Grid = ScopedServices.GetRequiredService<IHoneycomb>();
-        Grid.AddGhosts(Hx);
+        Grid.AddGhosts(Hx.Location);
     }
 
     private async Task OnClick()
@@ -57,7 +55,7 @@
             }
             else
             {
-                var lines = new[] {Hx.Index.ToString(), ">" };
+                var lines = Hx.ConsoleText ?? new[] {Hx.Location.Index.ToString(), ">" };
                 await jsRuntime.InvokeVoidAsync("consolePrint", lines.ToArray());
             }
         }
@@ -70,7 +68,7 @@
             if (!Opened)
             {
                 this.Opened = true;
-                Grid.EnableGhosts(Hx);
+                Grid.EnableGhosts(Hx.Location);
 
                 this.StateHasChanged();
                 base.StateHasChanged();
