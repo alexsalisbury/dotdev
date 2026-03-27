@@ -1,0 +1,18 @@
+﻿@page "/"
+@using DotDev.Client.Shared;
+@using DotDev.Client.Shared.HexPath;
+@using DotDev.Core.HexPath;
+@inject IHoneycomb Grid
+
+<HexPath Grid="Grid" />
+<ConsoleFooter Lines="Lines" />
+
+@code {
+    public string[] Lines { get; set; } = IntroHex.DefaultText;
+
+    private async Task Go()
+    {
+        await Task.Delay(2000);
+        await Grid.UnlockAsync();
+    }
+}

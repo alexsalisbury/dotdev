@@ -1,0 +1,78 @@
+﻿@using DotDev.Core.HexPath
+@inject NavigationManager Nav
+@inject IJSRuntime JS
+@inject IHoneycomb Grid
+
+<div class="@HexClass" style="@Hx.Style.MaxSizes" @onclick="OnClick" @onmouseover="OnHover">
+    <svg class="@SvgClass" viewBox="@Hx.Style.ViewBox">
+        <pattern id="@ImgPattern" x="0" y="0" width="1" height="1"
+                 viewBox="@Hx.Style.ViewBox" preserveAspectRatio="xMidYMid slice">
+            <image width="100%" height="100%" href="@Image" />
+        </pattern>
+        <polygon fill="@HexFill" style="@PolygonStyle" points="@Hx.Style.Points" />
+    </svg>
+</div>
+
+@code {
+    [Parameter] public HexItem Hx { get; set; }
+
+    private IJSObjectReference? _mod;
+    private bool Opened = false;
+
+    public bool Enabled => !Hx.Style.IsGhost;
+    public string Index => $"{Hx?.Location?.Index ?? 0}";
+    public string ImgPattern => $"imgpattern{Index}";
+    public string ImgPatternUrl => $"url(#imgpattern{Index})";
+    public string Image => Hx.Style.Image ?? "#";
+    public string Target => Hx.Style.Target ?? "#";
+
+    public string HexClass => Hx?.Style?.HexClass ?? "hexghost";
+    public string PolygonStyle =>
+        Opened
+            ? "stroke:aqua;stroke-width:1px;"
+            : "stroke:grey;stroke-width:1px;stroke-dasharray:5,5";
+
+    public string HexFill =>
+        Opened ? ImgPatternUrl :
+        Enabled ? (Hx.Style.Shade ?? "transparent") :
+        "transparent";
+
+    public string SvgClass =>
+        Hx is null ? "hex-svg-ghost" : $"hex-svg-hx{(uint)(Hx.Location.Index)}";
+
+    protected override async Task OnInitializedAsync()
+    {
+        Grid.AddGhosts(Hx.Location);
+        _mod = await JS.InvokeAsync<IJSObjectReference>("import", "./js/consoleFeels.js");
+    }
+
+    private async Task OnClick()
+    {
+        if (!Enabled)
+            return;
+
+        if (!Opened)
+            OnHover();
+
+        if (Target != "#")
+        {
+            await _mod!.InvokeVoidAsync("stopFeels");
+            Nav.NavigateTo(Target);
+        }
+        else
+        {
+            var lines = Hx.ConsoleText ?? new[] { $"{Hx.Location.Index}", ">" };
+            await _mod!.InvokeVoidAsync("consolePrint", (object)lines);
+        }
+    }
+
+    private void OnHover()
+    {
+        if (!Enabled || Opened)
+            return;
+
+        Opened = true;
+        Grid.EnableGhosts(Hx.Location);
+        StateHasChanged();
+    }
+}

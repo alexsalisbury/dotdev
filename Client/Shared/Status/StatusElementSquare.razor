@@ -1,0 +1,39 @@
+﻿@using DotDev.Core.Element
+
+<div class="@SquareClass">
+    <Element Info="SQ.Info" StatusKey="@ServerStatus"></Element>
+</div>
+
+@code {
+
+        [Parameter]
+        public Square SQ { get; set; }
+        [Parameter]
+        public EventCallback<int> SquareUpdate { get; set; }
+
+    private string pulse = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.SQ.OnChange += SquareUpdated;
+    }
+
+    public string SquareClass => $"square c{SQ.Column} r{SQ.Row} {pulse}";
+    public string OverlayClass => $"overlay {ServerStatus}";
+    public string ServerStatus => SQ?.ServerStatusClass ?? "unknown";
+
+    private async void SquareUpdated(object sender, EventArgs e)
+    {
+        pulse = "pulse";
+        await SquareUpdate.InvokeAsync();
+        this.StateHasChanged();
+        await Task.Delay(1000);
+        pulse = string.Empty;
+        this.StateHasChanged();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        this.SQ.OnChange -= SquareUpdated;
+    }  
+}

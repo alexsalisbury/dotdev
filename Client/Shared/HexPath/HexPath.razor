@@ -1,0 +1,26 @@
+﻿@using DotDev.Core.HexPath
+
+<div class="hexPath">
+	@foreach (var hex in @Grid.GetItems())
+	{
+        <Hex Hx="hex" />
+	}
+</div>
+
+@code {
+    [Parameter]
+    public IHoneycomb Grid { get; set; }
+    [Parameter]
+    public EventCallback<string> FooterUpdate { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Grid.HoneycombChanged += ((s,e) => { base.StateHasChanged(); });
+        Grid.AddRoot(new HexLocation(HexOrder.Intro, IntroHex.DefaultLocation));
+    }
+
+    public async Task StepUnlockAsync()
+    {
+        await Grid.UnlockAsync();
+    }
+}

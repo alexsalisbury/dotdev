@@ -1,0 +1,19 @@
+﻿@inject IJSRuntime JS
+
+<div id="consoleTarget"></div>
+
+@code {
+    [Parameter] public string[] Lines { get; set; }
+
+    private IJSObjectReference? _mod;
+
+    protected override async Task OnAfterRenderAsync(bool first)
+    {
+        if (!first) return;
+
+        _mod = await JS.InvokeAsync<IJSObjectReference>("import", "./js/consoleFeels.js");
+
+        await Task.Delay(2000);
+        await _mod.InvokeVoidAsync("consolePrint", (object)Lines);
+    }
+}
