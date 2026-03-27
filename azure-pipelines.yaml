@@ -1,0 +1,30 @@
+# Quick Pipeline based on: https://docs.microsoft.com/en-us/azure/static-web-apps/publish-devops
+# https://aka.ms/yaml
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - checkout: self
+    submodules: true
+
+  - task: AzureStaticWebApp@0
+    displayName: 'Build & Deploy SWA'
+    inputs:
+      # FRONTEND
+      app_location: 'Client'                 # Path to your Blazor WASM project
+      app_build_command: 'dotnet publish -c Release'  
+      output_location: 'wwwroot'             # Blazor WASM output folder
+
+      # BACKEND (Azure Functions isolated)
+      api_location: 'Api'
+      api_build_command: 'dotnet publish -c Release'
+
+      # OPTIONAL BUT MODERN (2026)
+      skip_app_build: false
+      skip_api_build: false
+      config_file_location: 'Client'         # staticwebapp.config.json lives here
+
+      # DEPLOYMENT
+      production_branch: 'element'
+      azure_static_web_apps_api_token: $(deployment_token)
