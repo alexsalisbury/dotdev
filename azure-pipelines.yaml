@@ -61,4 +61,4 @@ steps:
         az functionapp deployment source config-zip \
           --name DigitalHomeHubFunctionsv2 \
           --resource-group rg-bucket2 \     # ✅ Fix this
-          --src $(zipPath)
+          --src "$(zipPath)"
