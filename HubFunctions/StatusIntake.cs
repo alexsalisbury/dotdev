@@ -1,25 +1,34 @@
 namespace HubFunctions;
 
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using System.IO;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 public record StatusDatapoint(int Id, long Timestamp);
 
 public static class StatusIntake
 {
-    [FunctionName("StatusIntake")]
-    public static async Task<IActionResult> Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
-        [Queue("elementstatus")] IAsyncCollector<StatusDatapoint> notifications,
-        ILogger log)
+    [Function("StatusIntake")]
+    [QueueOutput("elementstatus")]
+    public static async Task<string> Run(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req,
+        FunctionContext context)
     {
-        var data = JsonConvert.DeserializeObject<StatusDatapoint>(req.Body.ToString());
-        await notifications.AddAsync(data);
-        return new AcceptedResult();
+        var logger = context.GetLogger("StatusIntake");
+
+        // Read body from HttpRequestData
+        var body = await new StreamReader(req.Body).ReadToEndAsync();
+
+        // Deserialize using System.Text.Json (recommended for isolated worker)
+        var data = JsonSerializer.Deserialize<StatusDatapoint>(body);
+
+        logger.LogInformation("Received status update: {Id} at {Timestamp}",
+            data?.Id, data?.Timestamp);
+
+        // Isolated worker: return the value directly to QueueOutput
+        return JsonSerializer.Serialize(data);
     }
 }
