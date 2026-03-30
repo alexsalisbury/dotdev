@@ -1,27 +1,19 @@
 ﻿namespace HubFunctions;
 
-using System;
-using System.Data;
-using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.SignalRService;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 
-public static class ElementBroadcastFunction
+public class ElementBroadcastFunction
 {
-    [FunctionName("broadcast")]
-    public static async Task QueueToBroadcast(
-    [QueueTrigger("elementstatus")] StatusDatapoint data,
-    [SignalR(HubName = "dotdev")] IAsyncCollector<SignalRMessage> signalRMessages, 
-    ILogger log,
-    ExecutionContext context)
+    [Function(nameof(BroadcastToAll))]
+    [SignalROutput(HubName = "chat", ConnectionStringSetting = "SignalRConnection")]
+    public static SignalRMessageAction BroadcastToAll(
+      [HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req)
     {
-        await signalRMessages.AddAsync(
-            new SignalRMessage
-            {
-                Target = "elementstatus",
-                Arguments = new object[] { data.Id, data.Timestamp }
-            });
+        using var bodyReader = new StreamReader(req.Body);
+        return new SignalRMessageAction("newMessage")
+        {
+            Arguments = new[] { bodyReader.ReadToEnd() }
+        };
     }
 }
