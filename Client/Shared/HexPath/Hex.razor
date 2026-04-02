@@ -62,7 +62,7 @@
         else
         {
             var lines = Hx.ConsoleText ?? new[] { $"{Hx.Location.Index}", ">" };
-            await _mod!.InvokeVoidAsync("consolePrint", (object)lines);
+            await _mod!.InvokeVoidAsync("consolePrint", lines);
         }
     }
 

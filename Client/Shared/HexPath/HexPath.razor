@@ -1,11 +1,15 @@
 ﻿@using DotDev.Core.HexPath
 
-<div class="hexPath">
-	@foreach (var hex in @Grid.GetItems())
-	{
-        <Hex Hx="hex" />
-	}
+
+<div class="hex-grid-container">
+    <div class="hexPath">
+        @foreach (var hex in Grid.GetItems())
+        {
+            <Hex Hx="hex" />
+        }
+    </div>
 </div>
+
 
 @code {
     [Parameter]
@@ -15,8 +19,18 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Grid.HoneycombChanged += ((s,e) => { base.StateHasChanged(); });
+        Grid.HoneycombChanged += OnHoneycombChanged;
         Grid.AddRoot(new HexLocation(HexOrder.Intro, IntroHex.DefaultLocation));
+    }
+
+    private void OnHoneycombChanged(object? sender, EventArgs e)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        Grid.HoneycombChanged -= OnHoneycombChanged;
     }
 
     public async Task StepUnlockAsync()
