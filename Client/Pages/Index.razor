@@ -3,16 +3,45 @@
 @using DotDev.Client.Shared.HexPath;
 @using DotDev.Core.HexPath;
 @inject IHoneycomb Grid
+@inject IJSRuntime JS
 
-<HexPath Grid="Grid" />
-<ConsoleFooter Lines="Lines" />
+<div class="page-container">
+
+    <section class="intro">
+        <h1 class="intro-title">Welcome</h1>
+        <p class="intro-tagline">
+            Hover a hex to reveal it. Click one to begin.
+        </p>
+    </section>
+
+    <section class="hex-wrapper">
+        <HexPath Grid="Grid" />
+    </section>
+
+    <section class="console-wrapper">
+        <ConsoleFooter Lines="Lines" />
+    </section>
+
+</div>
 
 @code {
-    public string[] Lines { get; set; } = IntroHex.DefaultText;
-
-    private async Task Go()
+    public string[] Lines { get; set; } =
     {
-        await Task.Delay(2000);
-        await Grid.UnlockAsync();
+        "Initializing...",
+        ">"
+    };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+
+            var mod = await JS.InvokeAsync<IJSObjectReference>("import", "./js/consoleFeels.js");
+          //  await mod.InvokeVoidAsync("consoleInit");
+
+            // give the console time to bootstrap before starting animations
+            await Task.Delay(150);
+            await Grid.UnlockAsync();
+        }
     }
 }
