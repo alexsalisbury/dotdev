@@ -1,17 +1,14 @@
-namespace HubFunctions;
-
-using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Extensions.SignalRService;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 
 public static class HubNegotiateFunction
 {
-    [FunctionName("negotiate")]
-    public static SignalRConnectionInfo Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous)] HttpRequest req,
-        [SignalRConnectionInfo(HubName = "dotdev")] SignalRConnectionInfo connectionInfo)
+    [Function("negotiate")]
+    public static string Run(
+        [HttpTrigger(AuthorizationLevel.Anonymous)] HttpRequestData req,
+        [SignalRConnectionInfoInput(HubName = "dotdev")] string connectionInfo)
     {
+        // The connectionInfo *string* is already JSON and ready to return.
         return connectionInfo;
     }
 }
