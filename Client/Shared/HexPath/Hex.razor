@@ -2,6 +2,7 @@
 @inject NavigationManager Nav
 @inject IJSRuntime JS
 @inject IHoneycomb Grid
+@implements IAsyncDisposable
 
 <div class="@HexClass" style="@Hx.Style.MaxSizes" @onclick="OnClick" @onmouseover="OnHover">
     <svg class="@SvgClass" viewBox="@Hx.Style.ViewBox">
@@ -62,7 +63,7 @@
         else
         {
             var lines = Hx.ConsoleText ?? new[] { $"{Hx.Location.Index}", ">" };
-            await _mod!.InvokeVoidAsync("consolePrint", lines);
+            await _mod!.InvokeVoidAsync("consolePrint", (object)lines);
         }
     }
 
@@ -74,5 +75,14 @@
         Opened = true;
         Grid.EnableGhosts(Hx.Location);
         StateHasChanged();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_mod is not null)
+        {
+            await _mod.InvokeVoidAsync("stopFeels");
+            await _mod.DisposeAsync();
+        }
     }
 }
