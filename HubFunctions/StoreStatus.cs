@@ -1,5 +1,4 @@
-namespace HubFunctions;
-
+using HubFunctions;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -10,54 +9,38 @@ using System.Threading.Tasks;
 
 public class StoreStatus
 {
+    private readonly ILogger _logger;
     private readonly IConfiguration _config;
-    private readonly ILogger<StoreStatus> _log;
 
-    public StoreStatus(IConfiguration config, ILogger<StoreStatus> log)
+    public StoreStatus(ILoggerFactory loggerFactory, IConfiguration config)
     {
+        _logger = loggerFactory.CreateLogger<StoreStatus>();
         _config = config;
-        _log = log;
     }
 
     [Function("storeStatus")]
-    [SignalROutput(HubName = "dotdev")]
-    public async Task<SignalRMessageAction?> Run(
+    public async Task Run(
         [QueueTrigger("elementstatus")] StatusDatapoint data,
         FunctionContext context)
     {
-        _log.LogInformation("Processing status update for ID {Id}", data.Id);
-
         await UpdateDatabase(data);
-
-        // Return SignalR message back to the hub
-        return new SignalRMessageAction("elementstatus")
-        {
-            Arguments = new object[] { data.Id, data.Timestamp }
-        };
     }
 
     private async Task UpdateDatabase(StatusDatapoint data)
     {
-        var str = _config.GetConnectionString("dotdev_cs");
-        if (str is null)
-        {
-            _log.LogError("Database connection string 'dotdev_cs' is missing.");
-            return;
-        }
+        var str = _config.GetConnectionString("dotdev");
 
         using var conn = new SqlConnection(str);
         await conn.OpenAsync();
 
-        using var cmd = new SqlCommand("dd_ServerUpdate", conn)
-        {
-            CommandType = CommandType.StoredProcedure
-        };
+        using var cmd = new SqlCommand("dd_ServerUpdate", conn);
+        cmd.CommandType = CommandType.StoredProcedure;
 
         cmd.Parameters.Add("@Number", SqlDbType.Int).Value = data.Id;
         cmd.Parameters.Add("@LastSeen", SqlDbType.DateTimeOffset)
-                      .Value = DateTimeOffset.FromUnixTimeSeconds(data.Timestamp);
+            .Value = DateTimeOffset.FromUnixTimeSeconds(data.Timestamp);
 
         var rows = await cmd.ExecuteNonQueryAsync();
-        _log.LogInformation("{rows} rows were updated.", rows);
+        _logger.LogInformation("{Rows} rows were updated", rows);
     }
 }

@@ -1,38 +1,30 @@
-﻿/* ============================================================
-   Global Reset / Base Styles
-   ============================================================ */
-
-html, body {
-    /* Allow the page to grow vertically */
-    min-height: 100vh;
-    margin: 0;
-    /* The aesthetic */
+﻿html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background-color: #001122;
     color: #fff;
-    /* Only prevent horizontal overflow */
+    height: 100vh;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 
-/* Remove focus rings on h1 (optional UX choice) */
 h1:focus {
     outline: none;
 }
 
-/* Links */
 a, .btn-link {
     color: #0077cc;
 }
 
-/* Buttons */
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
     border-color: #1861ac;
 }
 
-/* Validation */
+.content {
+    padding-top: 1.1rem;
+}
+
 .valid.modified:not([type=checkbox]) {
     outline: 1px solid #26b050;
 }
@@ -45,20 +37,16 @@ a, .btn-link {
     color: red;
 }
 
-/* ============================================================
-   Blazor Default Error UI 
-   ============================================================ */
-
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
     display: none;
     left: 0;
     padding: 0.6rem 1.25rem 0.7rem 1.25rem;
     position: fixed;
     width: 100%;
     z-index: 1000;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
 }
 
     #blazor-error-ui .dismiss {
@@ -78,133 +66,21 @@ a, .btn-link {
         content: "An error has occurred."
     }
 
-/* ============================================================
-   Page-Level Layout
-   ============================================================ */
-
-.page-container {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
+.page {
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
-
-/* Intro section */
-.intro {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.intro-title {
-    font-size: 2rem;
-    font-weight: 600;
-}
-
-.intro-tagline {
-    color: #9bb8d3;
-    opacity: 0.9;
-    margin-top: .25rem;
-}
-
-.hex-wrapper {
-    display: flex;
-    justify-content: center;
-    margin: 2rem 0;
-}
-
-.console-wrapper {
-    margin-top: 3rem;
-}
-
-/* ============================================================
-   Hex Grid and Tiles
-   ============================================================ */
-
-.hexPath {
-    display: inline-block;
-    position: relative;
-}
-
-    .hexPath > div {
-        transition: transform .15s ease-out;
-    }
-
-        .hexPath > div:hover {
-            transform: scale(1.05);
-        }
-
-/* ============================================================
-   Console & Social Icons
-   ============================================================ */
-
 
 #consoleTarget {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    max-width: 90vw;
-    word-wrap: break-word;
-    /* keep your CRT look */
-    color: #b7ffcd;
     font-size: 24px;
     font-family: 'Cutive Mono';
-}
-
-
-    /* Scanline shader */
-    #consoleTarget::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 10;
-        background: repeating-linear-gradient( to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(0,0,0,0.18) 3px );
-        mix-blend-mode: overlay;
-    }
-
-    /* Additional CRT bloom */
-    #consoleTarget::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        background: radial-gradient( circle at center, rgba(0,255,128,0.12) 0%, rgba(0,0,0,0) 80% );
-        z-index: -1;
-    }
-
-/* Subtle flicker */
-@keyframes crtFlicker {
-    from {
-        opacity: 0.97;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-/* "Terminal cursor" styling (JS will animate it) */
-.console-caret {
-    display: inline-block;
-    width: 12px;
-    margin-left: 2px;
-    background-color: #4cff8f;
-    animation: blinkCaret 0.9s steps(1) infinite;
-}
-
-@keyframes blinkCaret {
-    0%, 50% {
-        opacity: 1;
-    }
-
-    50%, 100% {
-        opacity: 0;
-    }
+    color: #ffffff;
+    filter: blur(1px);
+    position: absolute;
+    bottom: 30px;
+    right: 50px;
+    perspective: -30px;
 }
 
 .social {
@@ -213,6 +89,7 @@ a, .btn-link {
     justify-content: flex-end;
     position: absolute;
     bottom: 30px;
+    perspective: 30px;
 }
 
     .social img {
