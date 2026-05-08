@@ -1,4 +1,5 @@
 ﻿@inject IJSRuntime JS
+@implements IAsyncDisposable
 
 <div id="consoleTarget"></div>
 
@@ -14,6 +15,15 @@
         _mod = await JS.InvokeAsync<IJSObjectReference>("import", "./js/consoleFeels.js");
 
         await Task.Delay(2000);
-        await _mod.InvokeVoidAsync("consolePrint", Lines);
+        await _mod.InvokeVoidAsync("consolePrint", (object)Lines);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_mod is not null)
+        {
+            await _mod.InvokeVoidAsync("stopFeels");
+            await _mod.DisposeAsync();
+        }
     }
 }

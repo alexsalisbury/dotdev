@@ -1,10 +1,8 @@
-﻿@using DotDev.Client.Hubs
-@using DotDev.Core.Element;
+﻿@using DotDev.Core.Element;
 @using Microsoft.AspNetCore.SignalR.Client;
 
 @inject HttpClient Http;
 @inject ILogger<PeriodicTable> logger;
-@inject HubConfig HubConfig
 @implements IAsyncDisposable;
 
 <div class="periodic-table">
@@ -15,6 +13,7 @@
 </div>
 
 @code {
+    private const string hubUrl = "https://digitalhomehubfunctions.azurewebsites.net/api/";
     private HubConnection? elementStatus;
     private IEnumerable<ElementInfo> elements = Array.Empty<ElementInfo>();
     private Dictionary<int, Square> squares = new();
@@ -44,7 +43,7 @@
             await SetupElements();
 
             elementStatus = new HubConnectionBuilder()
-            .WithUrl($"{HubConfig.HubUrl}")
+                .WithUrl(hubUrl)
                 .WithAutomaticReconnect()
                 .Build();
 
@@ -299,7 +298,15 @@
     {
         if (elementStatus is not null)
         {
+             try
+             {
+                 await elementStatus.StopAsync();
+             }
+             catch (ObjectDisposedException)
+             {
+             }
             await elementStatus.DisposeAsync();
+            elementStatus = null;
         }
     }
 }
