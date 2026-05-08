@@ -7,7 +7,7 @@ public static class HubNegotiateFunction
 {
     [Function("negotiate")]
     public static SignalRConnectionInfo Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous)] HttpRequest req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequest req,
         [SignalRConnectionInfoInput(HubName = "dotdev")] SignalRConnectionInfo connectionInfo)
     {
         return connectionInfo;
