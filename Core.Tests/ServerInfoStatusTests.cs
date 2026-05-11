@@ -118,4 +118,18 @@ public class ServerInfoStatusTests
         var server = new ServerInfo { Number = 42 };
         Assert.Equal("42", server.IP);
     }
+
+    [Fact]
+    public void Generate_SetsDefaultDeviceType()
+    {
+        var server = ServerInfo.Generate(1, null);
+        Assert.Equal(404u, server.DeviceType);
+    }
+
+    [Fact]
+    public void Generate_WithNullTimestamp_LiveStatusIsUntracked()
+    {
+        var server = ServerInfo.Generate(1, null);
+        Assert.Equal("untracked", server.LiveStatus);
+    }
 }

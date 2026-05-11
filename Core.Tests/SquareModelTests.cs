@@ -161,4 +161,84 @@ public class SquareModelTests
 
         Assert.Equal(1, square.Row);
     }
+
+    [Fact]
+    public void Square_WithNoInfoOrStatus_IsNotPopulated()
+    {
+        var square = new Square();
+        Assert.False(square.Populated);
+    }
+
+    [Fact]
+    public void Square_WithOnlyStatus_IsNotPopulated()
+    {
+        var status = new ServerInfo { Number = 1, Symbol = "H", Name = "Hydrogen", LastStatus = "active", DeviceType = 1, LastSeen = DateTimeOffset.UtcNow };
+        var square = new Square(null, status);
+        Assert.False(square.Populated);
+    }
+
+    [Fact]
+    public void Square_Column_WithNoInfo_ReturnsZero()
+    {
+        var square = new Square();
+        Assert.Equal(0, square.Column);
+    }
+
+    [Fact]
+    public void Square_Row_WithNoInfo_ReturnsZero()
+    {
+        var square = new Square();
+        Assert.Equal(0, square.Row);
+    }
+
+    [Fact]
+    public void Square_Name_WithNoInfoOrStatus_ReturnsUnknown()
+    {
+        var square = new Square();
+        Assert.Equal("Unknown", square.Name);
+    }
+
+    [Fact]
+    public void Square_ServerStatusClass_WithStatus_ReturnsLiveStatus()
+    {
+        var info = new ElementInfo(1, "H", "Hydrogen", 1.008, "[1]", "other-nonmetal", 1, 1);
+        var status = new ServerInfo { Number = 1, Symbol = "H", Name = "Hydrogen", LastStatus = "active", DeviceType = 1, LastSeen = DateTimeOffset.UtcNow.AddSeconds(-30) };
+        var square = new Square(info, status);
+
+        Assert.Equal("active", square.ServerStatusClass);
+    }
+
+    [Fact]
+    public void Square_SetElement_WithNull_PreservesExistingInfo()
+    {
+        var info = new ElementInfo(1, "H", "Hydrogen", 1.008, "[1]", "other-nonmetal", 1, 1);
+        var square = new Square(info, null);
+
+        square.SetElement(null);
+
+        Assert.Equal(info, square.Info);
+    }
+
+    [Fact]
+    public void Square_SetStatus_WithNull_PreservesExistingStatus()
+    {
+        var status = new ServerInfo { Number = 1, Symbol = "H", Name = "Hydrogen", LastStatus = "active", DeviceType = 1, LastSeen = DateTimeOffset.UtcNow };
+        var square = new Square(null, status);
+
+        square.SetStatus(null);
+
+        Assert.Equal(status, square.Status);
+    }
+
+    [Fact]
+    public void Square_SetLastSeen_WithExistingStatus_PreservesOtherFields()
+    {
+        var info = new ElementInfo(1, "H", "Hydrogen", 1.008, "[1]", "other-nonmetal", 1, 1);
+        var status = new ServerInfo { Number = 1, Symbol = "H", Name = "my-server", LastStatus = "active", DeviceType = 1, LastSeen = DateTimeOffset.UtcNow.AddMinutes(-10) };
+        var square = new Square(info, status);
+
+        square.SetLastSeen(DateTimeOffset.UtcNow);
+
+        Assert.Equal("my-server", square.Status?.Name);
+    }
 }
