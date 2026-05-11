@@ -1,65 +1,70 @@
-# Blazor Starter Application
+# dotdev
 
-This template contains an example .NET 8 [Blazor WebAssembly](https://docs.microsoft.com/aspnet/core/blazor/?view=aspnetcore-6.0#blazor-webassembly) client application, a .NET 8 C# [Azure Functions](https://docs.microsoft.com/azure/azure-functions/functions-overview), and a C# class library with shared code.
+Personal site built with Blazor WebAssembly, Azure Functions, and Azure Static Web Apps. Features an interactive hex grid homepage and a real-time status dashboard rendered as a periodic table.
+
+## Projects
+
+| Project | Description |
+|---|---|
+| **Client** | Blazor WebAssembly frontend |
+| **Api** | Azure Functions API — serves element and server data |
+| **HubFunctions** | Azure Functions SignalR hub — broadcasts real-time status updates |
+| **Core** | Shared C# class library — domain models for HexPath and Element/Status |
+| **Core.Tests** | xUnit + bunit test project (255 tests) |
+
+## Features
+
+- **Hex grid** (`/`) — Interactive honeycomb navigation with JS-driven console animation
+- **Status dashboard** (`/status`) — Periodic table of servers with live status via SignalR
 
 ## Getting Started
 
-1. Create a repository from the [GitHub template](https://docs.github.com/en/enterprise/2.22/user/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template) and then clone it locally to your machine.
+### Prerequisites
 
-1. In the **Api** folder, copy `local.settings.example.json` to `local.settings.json`
+- [.NET 10 SDK](https://dotnet.microsoft.com/download)
+- [Azure Functions Core Tools](https://www.npmjs.com/package/azure-functions-core-tools)
+- [Azure Static Web Apps CLI](https://www.npmjs.com/package/@azure/static-web-apps-cli)
 
-1. Continue using either Visual Studio or Visual Studio Code.
+### Running locally
 
-### Visual Studio 2022
+1. Copy `Api/local.settings.example.json` to `Api/local.settings.json` and fill in your values.
 
-Once you clone the project, open the solution in the latest release of [Visual Studio 2022](https://visualstudio.microsoft.com/vs/) with the Azure workload installed, and follow these steps:
-
-1. Right-click on the solution and select **Configure Startup Projects...**.
-
-1. Select **Multiple startup projects** and set the following actions for each project:
-    - *Api* - **Start**
-    - *Client* - **Start**
-    - *Shared* - None
-
-1. Press **F5** to launch both the client application and the Functions API app.
-
-### Visual Studio Code with Azure Static Web Apps CLI for a better development experience (Optional)
-
-1. Install (or update) the [Azure Static Web Apps CLI](https://www.npmjs.com/package/@azure/static-web-apps-cli) and [Azure Functions Core Tools CLI](https://www.npmjs.com/package/azure-functions-core-tools).
-
-1. Open the folder in Visual Studio Code.
-
-1. Delete file `Client/wwwroot/appsettings.Development.json`
-
-1. In the VS Code terminal, run the following command to start the Static Web Apps CLI, along with the Blazor WebAssembly client application and the Functions API app:
-
-    In the Client folder, run:
+2. Start the Blazor client:
     ```bash
+    cd Client
     dotnet run
     ```
 
-    In the API folder, run:
+3. Start the API:
     ```bash
+    cd Api
     func start
     ```
 
-    In another terminal, run:
+4. Start the SignalR hub functions:
+    ```bash
+    cd HubFunctions
+    func start
+    ```
+
+5. Optionally, proxy everything through the SWA CLI:
     ```bash
     swa start http://localhost:5000 --api-location http://localhost:7071
     ```
+    Then open `http://localhost:4280`.
 
-    The Static Web Apps CLI (`swa`) starts a proxy on port 4280 that will forward static site requests to the Blazor server on port 5000 and requests to the `/api` endpoint to the Functions server. 
+### Visual Studio 2022
 
-1. Open a browser and navigate to the Static Web Apps CLI's address at `http://localhost:4280`. You'll be able to access both the client application and the Functions API app in this single address. When you navigate to the "Fetch Data" page, you'll see the data returned by the Functions API app.
+Open the solution, right-click → **Configure Startup Projects**, set **Api**, **Client**, and **HubFunctions** to **Start**, then press **F5**.
 
-1. Enter Ctrl-C to stop the Static Web Apps CLI.
+## Tests
 
-## Template Structure
+```bash
+dotnet test Core.Tests/Core.Tests.csproj
+```
 
-- **Client**: The Blazor WebAssembly sample application
-- **Api**: A C# Azure Functions API, which the Blazor application will call
-- **Shared**: A C# class library with a shared data model between the Blazor and Functions application
+Tests use [bunit](https://bunit.dev) for Blazor component testing and [Moq](https://github.com/moq/moq4) for mocking. Coverage includes Core domain models, Honeycomb grid logic, all Client components, and page-level rendering.
 
-## Deploy to Azure Static Web Apps
+## Deploy
 
-This application can be deployed to [Azure Static Web Apps](https://docs.microsoft.com/azure/static-web-apps), to learn how, check out [our quickstart guide](https://aka.ms/blazor-swa/quickstart).
+Deployed to [Azure Static Web Apps](https://docs.microsoft.com/azure/static-web-apps) via GitHub Actions.
