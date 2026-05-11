@@ -7,6 +7,10 @@ public record HexLocation
     public HexOrder Index { get; set; }
     public uint GridIndex => ((Row * 100) + Column);
 
+    public HexLocation() : base()
+    {
+    }
+
     public HexLocation(uint row, uint column) : base()
     {
         this.Row = row;
