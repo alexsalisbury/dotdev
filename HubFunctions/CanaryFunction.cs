@@ -1,29 +1,34 @@
-﻿namespace HubFunctions;
+namespace HubFunctions;
 
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Azure.Storage.Queues;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Logging;
 
-
-
-public static class CanaryFunction
+public class CanaryFunction
 {
+    private readonly QueueClient _queueClient;
+    private readonly ILogger _logger;
+
+    public CanaryFunction(QueueClient queueClient, ILoggerFactory loggerFactory)
+    {
+        _queueClient = queueClient;
+        _logger = loggerFactory.CreateLogger<CanaryFunction>();
+    }
+
     /// <summary>
     /// This canary skips past the IoT workflow to help us verify the hub/display end of the pipeline.
     /// </summary>
-    /// <param name="myTimer"></param>
-    /// <param name="queueClient">Represents a Queue in Azure</param>
     /// <remarks>Using Copernicium for Canary; Ca (Calcium) was a previous machine name.</remarks>
-    /// <returns>Task</returns>
     [Function("Canary")]
-    public static async Task Run(
-        [TimerTrigger("0 */5 * * * *")] TimerInfo myTimer,
-        [QueueTrigger("elementstatus")] QueueClient queueClient)
+    public async Task Run([TimerTrigger("0 */5 * * * *")] TimerInfo myTimer)
     {
         var cn = new StatusDatapoint(112, DateTimeOffset.UtcNow.ToUnixTimeSeconds());
-        await queueClient.SendMessageAsync(JsonSerializer.Serialize(cn));
+        var message = JsonSerializer.Serialize(cn);
 
+        await _queueClient.SendMessageAsync(message);
+        _logger.LogInformation("Canary sent for Copernicium at {Time}", DateTimeOffset.UtcNow);
     }
 }
