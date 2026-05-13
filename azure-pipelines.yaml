@@ -36,8 +36,8 @@ steps:
     inputs:
       command: 'publish'
       publishWebProjects: false
-      projects: 'HubFunctions/HubFunctions.csproj'        # ✅ Your backend project
-      arguments: '--configuration Release --output $(publishDir)'
+      projects: 'HubFunctions/HubFunctions.csproj'       
+      arguments: '--configuration Release --output $(publishDir)/publish'
       zipAfterPublish: false
 
   # 2. Create ZIP for deployment
@@ -54,7 +54,7 @@ steps:
   - task: AzureCLI@2
     displayName: 'Deploy Function App'
     inputs:
-      azureSubscription: 'Bucket2'   # ✅ Fix this
+      azureSubscription: 'Bucket2'  
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
