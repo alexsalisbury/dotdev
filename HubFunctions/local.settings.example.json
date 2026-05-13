@@ -1,12 +1,16 @@
 {
   "IsEncrypted": false,
   "Values": {
-    "AzureWebJobsStorage": "",
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "AzureSignalRConnectionString": "<your Azure SignalR Service connection string>"
   },
   "Host": {
     "LocalHttpPort": 7071,
     "CORS": "*",
     "CORSCredentials": false
+  },
+  "ConnectionStrings": {
+    "dotdev": "<your SQL connection string>"
   }
 }
