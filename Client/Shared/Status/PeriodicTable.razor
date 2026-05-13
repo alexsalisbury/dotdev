@@ -42,33 +42,39 @@
             await SetupServers();
             await SetupElements();
 
-            elementStatus = new HubConnectionBuilder()
-                .WithUrl(hubUrl)
-                .WithAutomaticReconnect()
-                .Build();
-
-            logger.LogInformation("Connected");
-
-            elementStatus?.On<int, long>("elementstatus", (id, timestamp) =>
+            try
             {
-                logger.LogInformation("ElementStatus data point received. {id} {timestamp}", id, timestamp);
-                var ts = DateTimeOffset.FromUnixTimeSeconds(timestamp);
+                elementStatus = new HubConnectionBuilder()
+                    .WithUrl(hubUrl)
+                    .WithAutomaticReconnect()
+                    .Build();
 
-                if (squares.TryGetValue(id, out var sq))
+                elementStatus.On<int, long>("elementstatus", (id, timestamp) =>
                 {
-                    logger.LogInformation("Square {square} found", sq.Name);
-                    sq.SetLastSeen(ts);
-                }
-                else
-                {
-                    var sqCount = squares?.Count ?? 0;
-                    logger.LogWarning("Couldn't find square. Known:{sqCount}", sqCount);
-                }
+                    logger.LogInformation("ElementStatus data point received. {id} {timestamp}", id, timestamp);
+                    var ts = DateTimeOffset.FromUnixTimeSeconds(timestamp);
 
-                StateHasChanged();
-            });
+                    if (squares.TryGetValue(id, out var sq))
+                    {
+                        logger.LogInformation("Square {square} found", sq.Name);
+                        sq.SetLastSeen(ts);
+                    }
+                    else
+                    {
+                        var sqCount = squares?.Count ?? 0;
+                        logger.LogWarning("Couldn't find square. Known:{sqCount}", sqCount);
+                    }
 
-            await elementStatus?.StartAsync();
+                    StateHasChanged();
+                });
+
+                await elementStatus.StartAsync();
+                logger.LogInformation("SignalR hub connected.");
+            }
+            catch (Exception ex)
+            {
+                logger.LogWarning(ex, "Failed to connect to SignalR hub at {Url}. Status page will display without live updates.", hubUrl);
+            }
         }
     }
 
