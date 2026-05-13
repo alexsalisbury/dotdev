@@ -7,6 +7,7 @@
     [Parameter] public string[] Lines { get; set; }
 
     private IJSObjectReference? _mod;
+    private CancellationTokenSource _cts = new();
 
     protected override async Task OnAfterRenderAsync(bool first)
     {
@@ -14,15 +15,28 @@
 
         _mod = await JS.InvokeAsync<IJSObjectReference>("import", "./js/consoleFeels.js");
 
-        await Task.Delay(2000);
-        await _mod.InvokeVoidAsync("consolePrint", (object)Lines);
+        try
+        {
+            await Task.Delay(2000, _cts.Token);
+            await _mod.InvokeVoidAsync("consolePrint", (object)Lines);
+        }
+        catch (OperationCanceledException) { }
+        catch (ObjectDisposedException) { }
     }
 
     public async ValueTask DisposeAsync()
     {
+        await _cts.CancelAsync();
+        _cts.Dispose();
+
         if (_mod is not null)
         {
-            await _mod.InvokeVoidAsync("stopFeels");
+            try
+            {
+                await _mod.InvokeVoidAsync("stopFeels");
+            }
+            catch (ObjectDisposedException) { }
+
             await _mod.DisposeAsync();
         }
     }
